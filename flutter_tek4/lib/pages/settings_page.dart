@@ -13,6 +13,11 @@ class _SettingsState extends State<Settings> {
 
   @override
   void initState() {
-    settings = AppData.
+    settings = AppData.settings[0];
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    
   }
 }

@@ -1,7 +1,13 @@
 import 'package:flutter_tek4/models/image_content.dart';
 import 'package:flutter_tek4/models/profile.dart';
+import 'package:flutter_tek4/models/settings.dart';
 
 class AppData {
+  static List<Settings> settings = [
+    Settings(
+      themeColor: false,
+    )
+  ];
   static List<Profile> profiles = [
     Profile(
       imageUrl: 'images/tom.girard.jpg',

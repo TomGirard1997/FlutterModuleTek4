@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_tek4/appdata/appdata.dart';
 import 'package:flutter_tek4/models/profile.dart';
-import 'package:camera/camera.dart';
 import 'package:image_picker/image_picker.dart';
 
 class UserProfile extends StatefulWidget {
@@ -132,7 +131,8 @@ class _TakeProfilePictureSectionState extends State<TakeProfilePictureSection> {
   PickedFile? _pickedImage;
   final picker = ImagePicker();
 
-  ImageProvider<Object>? imageTodisplay = AssetImage(AppData.profiles[0].imageUrl);
+  ImageProvider<Object>? imageTodisplay =
+      AssetImage(AppData.profiles[0].imageUrl);
 
   @override
   void initState() {
@@ -156,10 +156,8 @@ class _TakeProfilePictureSectionState extends State<TakeProfilePictureSection> {
 
   @override
   void dispose() {
-
-  imageTodisplay = null;
-  super.dispose();
-
+    imageTodisplay = null;
+    super.dispose();
   }
 
   @override
@@ -174,8 +172,7 @@ class _TakeProfilePictureSectionState extends State<TakeProfilePictureSection> {
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(100),
                   image: DecorationImage(
-                      image: imageTodisplay!,
-                      fit: BoxFit.cover))),
+                      image: imageTodisplay!, fit: BoxFit.cover))),
           SizedBox(
               height: 50,
               width: 50,

@@ -4,8 +4,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_tek4/pages/user_profile.dart';
-// import 'package:english_words/english_words.dart';
-import 'package:image_picker/image_picker.dart';
+import 'package:flutter_tek4/pages/map.dart';
 
 void main() => runApp(const MyApp());
 
@@ -39,6 +38,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
       style: optionStyle,
     ),
     UserProfile(),
+    MapSample(),
     Text(
       'Settings',
       style: optionStyle,
@@ -72,12 +72,18 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
             label: 'Profile',
           ),
           BottomNavigationBarItem(
+            icon: Icon(Icons.public),
+            label: 'Map',
+          ),
+          BottomNavigationBarItem(
             icon: Icon(Icons.settings),
             label: 'Settings',
           ),
         ],
         currentIndex: _selectedIndex,
         selectedItemColor: Colors.amber[800],
+        unselectedItemColor: Colors.blueGrey,
+        unselectedLabelStyle: TextStyle(color: Colors.blueGrey),
         onTap: _onItemTapped,
       ),
     );

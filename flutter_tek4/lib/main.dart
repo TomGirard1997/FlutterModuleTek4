@@ -6,7 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_tek4/pages/user_profile.dart';
 import 'package:flutter_tek4/pages/map.dart';
 
-void main() => runApp(const MyApp());
+void main() => runApp(
+      MyApp(),
+    );
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);

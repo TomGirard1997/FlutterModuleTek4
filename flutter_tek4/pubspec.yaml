@@ -34,10 +34,20 @@ dependencies:
   # image_picker: ^0.5.4+3
   image_picker: 
   google_maps_flutter: 
+  json_annotation:
+  http:
+  provider:
+  clippy_flutter:
+  custom_info_window: ^1.0.1
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  pedantic: ^1.11.0
+  build_runner: ^1.10.0
+  json_serializable:
+
+
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

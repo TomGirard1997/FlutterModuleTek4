@@ -51,9 +51,9 @@ flutter:
   uses-material-design: true
 
   fonts:
-    - family: Pacifico
-      fonts:
-        - asset: assets/fonts/Pacifico.ttf
+  - family: Pacifico
+    fonts:
+      - asset: assets/fonts/Pacifico.ttf
   
   assets:
     - assets/images/

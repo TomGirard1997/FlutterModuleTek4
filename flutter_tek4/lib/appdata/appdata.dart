@@ -5,8 +5,8 @@ import 'package:flutter_tek4/models/settings.dart';
 class AppData {
   static List<Settings> settings = [
     Settings(
-      themeColor: false,
-    )
+      themeColor: "white",
+    ),
   ];
   static List<Profile> profiles = [
     Profile(

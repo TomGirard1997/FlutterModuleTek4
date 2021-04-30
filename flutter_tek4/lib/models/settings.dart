@@ -1,8 +1,10 @@
 
 class Settings {
-  final bool themeColor;
+  final String themeColor;
+  final String title;
 
   Settings({
-    this.themeColor = false,
-  })
+    this.themeColor = "white",
+    this.title = "Parameters",
+  });
 }

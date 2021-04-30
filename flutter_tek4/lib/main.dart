@@ -4,6 +4,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_tek4/pages/user_profile.dart';
+import 'package:flutter_tek4/pages/settings_page.dart';
 // import 'package:english_words/english_words.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -39,10 +40,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
       style: optionStyle,
     ),
     UserProfile(),
-    Text(
-      'Settings',
-      style: optionStyle,
-    ),
+    Settings(),
   ];
 
   void _onItemTapped(int index) {

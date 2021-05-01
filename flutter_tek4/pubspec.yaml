@@ -23,7 +23,6 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  camera:
   path_provider:
   path:
 
@@ -32,6 +31,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   english_words: ^4.0.0-0
   image_picker: ^0.7.4
+  flutter_datetime_picker: ^1.5.1
 dev_dependencies:
   flutter_test:
     sdk: flutter

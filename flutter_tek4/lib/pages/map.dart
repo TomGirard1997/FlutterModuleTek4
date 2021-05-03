@@ -1,9 +1,13 @@
-import 'package:clippy_flutter/clippy_flutter.dart';
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:custom_info_window/custom_info_window.dart';
 import '../models/album.dart';
 // import '../services/location_album.dart' as locations;
+
+import 'dart:ui' as ui;
 
 class MapSample extends StatefulWidget {
   @override
@@ -23,8 +27,29 @@ class MapSampleState extends State<MapSample> {
   CustomInfoWindowController _customInfoWindowController =
       CustomInfoWindowController();
 
-  final LatLng _latLng = LatLng(28.7041, 77.1025);
-  final double _zoom = 15.0;
+  final LatLng _latLng = LatLng(0, -30);
+  final double _zoom = 2.0;
+
+  late final markerIcon;
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  void setCustomPin() async {
+    markerIcon = await getBytesFromAsset('assets/images/camera.png', 80);
+  }
+
+  Future<Uint8List> getBytesFromAsset(String path, int width) async {
+    ByteData data = await rootBundle.load(path);
+    ui.Codec codec = await ui.instantiateImageCodec(data.buffer.asUint8List(),
+        targetWidth: width);
+    ui.FrameInfo fi = await codec.getNextFrame();
+    return (await fi.image.toByteData(format: ui.ImageByteFormat.png))!
+        .buffer
+        .asUint8List();
+  }
 
   @override
   void dispose() {
@@ -36,58 +61,43 @@ class MapSampleState extends State<MapSample> {
 
   @override
   Widget build(BuildContext context) {
+    BitmapDescriptor customIcon;
+    setCustomPin();
+    if (markerIcon != null) {
+      customIcon = BitmapDescriptor.fromBytes(markerIcon);
+    } else {
+      customIcon = BitmapDescriptor.defaultMarker;
+    }
     _listAlbums.forEach((key, value) {
       _markers.add(
         Marker(
+            icon: customIcon,
             markerId: MarkerId(value.title),
             position: value.location,
             onTap: () {
               _customInfoWindowController.addInfoWindow!(
-                Column(
-                  children: [
-                    Expanded(
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(4),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                value.title,
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .headline6!
-                                    .copyWith(
-                                      color: Colors.black,
-                                    ),
-                              ),
-                              SizedBox(
-                                height: 5.0,
-                              ),
-                              Image.asset(value.image, height: 75),
-                              SizedBox(
-                                height: 3.0,
-                              ),
-                            ],
-                          ),
-                        ),
-                        width: double.infinity,
-                        height: double.infinity,
+                Card(
+                  elevation: 5.0,
+                  clipBehavior: Clip.antiAlias,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      Text(value.title, style: TextStyle(fontSize: 14)),
+                      SizedBox(
+                        height: 3,
                       ),
-                    ),
-                    Triangle.isosceles(
-                      edge: Edge.BOTTOM,
-                      child: Container(
-                        color: Colors.white,
-                        width: 20.0,
-                        height: 10.0,
+                      Image.asset(value.image,
+                          fit: BoxFit.fitWidth, height: 110),
+                      TextButton(
+                        onPressed: () {
+                          // Perform some action
+                        },
+                        child: Text('Access to Album',
+                            style:
+                                TextStyle(fontSize: 10, color: Colors.orange)),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
                 value.location,
               );
@@ -116,9 +126,8 @@ class MapSampleState extends State<MapSample> {
           ),
           CustomInfoWindow(
             controller: _customInfoWindowController,
-            height: 150,
             width: 200,
-            offset: 50,
+            height: 200,
           ),
         ],
       ),

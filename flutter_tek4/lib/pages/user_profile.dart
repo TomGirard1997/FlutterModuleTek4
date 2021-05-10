@@ -26,18 +26,18 @@ class _UserProfileState extends State<UserProfile> {
         SizedBox(height: 20),
         HeaderSection(),
         SizedBox(height: 40),
-        Container(
-            child: Wrap(children: <Widget>[
-          for (int i = 0; i < AppData.imageContents.length; i++)
-            Container(
-              height: MediaQuery.of(context).size.width / 3,
-              width: MediaQuery.of(context).size.width / 3,
-              decoration: BoxDecoration(
-                  image: DecorationImage(
-                      image: AssetImage(AppData.imageContents[i].imageUrl),
-                      fit: BoxFit.cover)),
-            )
-        ]))
+        // Container(
+        //     child: Wrap(children: <Widget>[
+        //   for (int i = 0; i < AppData.imageContents.length; i++)
+        //     Container(
+        //       height: MediaQuery.of(context).size.width / 3,
+        //       width: MediaQuery.of(context).size.width / 3,
+        //       decoration: BoxDecoration(
+        //           image: DecorationImage(
+        //               image: AssetImage(AppData.imageContents[i].imageUrl),
+        //               fit: BoxFit.cover)),
+        //     )
+        // ]))
       ]),
     );
   }

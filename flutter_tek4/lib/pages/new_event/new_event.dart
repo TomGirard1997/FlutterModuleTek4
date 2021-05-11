@@ -49,7 +49,7 @@ class HeaderSection extends StatelessWidget {
           SizedBox(height: 50),
           TextField(
             decoration: const InputDecoration(
-              hintText: 'Enter your email',
+              hintText: 'Enter event name',
             ),
           ),
           SizedBox(height: 50),

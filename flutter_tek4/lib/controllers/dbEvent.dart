@@ -11,7 +11,7 @@ class DBEvent {
   static Database? _db;
   static const String PIC_ID = 'picture_id';
   static const String PIC_NAME = 'picture_name';
-  static const String PIC_DATA = 'picture_data';
+  static const String PIC_PATH = 'picture_path';
   static const String PIC_COMMENT = 'picture_comment';
   static const String PIC_EVENT_ID = 'picture_event_id';
 
@@ -48,7 +48,7 @@ class DBEvent {
             $PIC_ID INTEGER PRIMARY KEY,
             $PIC_EVENT_ID INTEGER PRIMARY KEY,
             $PIC_NAME TEXT,
-            $PIC_DATA TEXT,
+            $PIC_PATH TEXT,
             $PIC_COMMENT TEXT,
 
             FOREIGN KEY ($PIC_EVENT_ID) REFERENCES $EVENT_TABLE ($EVENT_ID) 
@@ -60,12 +60,12 @@ class DBEvent {
         $EVENT_ID INTEGER PRIMARY KEY,
         $EVENT_DESCR TEXT,
         $EVENT_TITLE TEXT,
-        $EVENT_LAT TEXT,
-        $EVENT_LONG TEXT,
+        $EVENT_LAT REAL,
+        $EVENT_LONG REAL,
         $EVENT_COVER_PIC (
           $PIC_ID INTEGER,
           $PIC_NAME TEXT,
-          $PIC_DATA TEXT,
+          $PIC_PATH TEXT,
           $PIC_COMMENT TEXT
         )
       )
@@ -90,7 +90,7 @@ class DBEvent {
   Future<List<Picture>> getPicturesOfEvent(int eventId) async {
     var dbClient = await db;
 
-    List<Map<String, dynamic>> mapsPictures = await dbClient!.query(PIC_TABLE, columns: [PIC_ID, PIC_NAME, PIC_DATA, PIC_COMMENT, EVENT_COVER_PIC]);
+    List<Map<String, dynamic>> mapsPictures = await dbClient!.query(PIC_TABLE, columns: [PIC_ID, PIC_NAME, PIC_PATH, PIC_COMMENT, EVENT_COVER_PIC]);
     List<Picture> eventPictures = [];
 
     if (mapsPictures.length > 0) {

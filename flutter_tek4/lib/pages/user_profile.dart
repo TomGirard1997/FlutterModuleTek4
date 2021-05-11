@@ -3,6 +3,9 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_tek4/appdata/appdata.dart';
 import 'package:flutter_tek4/models/profile.dart';
+import 'package:flutter_tek4/models/picture.dart';
+import 'package:flutter_tek4/models/event.dart';
+import 'package:flutter_tek4/controllers/dbEvent.dart';
 import 'package:image_picker/image_picker.dart';
 
 class UserProfile extends StatefulWidget {
@@ -12,11 +15,35 @@ class UserProfile extends StatefulWidget {
 
 class _UserProfileState extends State<UserProfile> {
   late Profile profile;
+  late DBEvent dbEvent;
 
   @override
-  void initState() {
-    profile = AppData.profiles[0];
+  Future<void> initState() async {
     super.initState();
+
+    profile = AppData.profiles[0];
+
+    //test
+
+    dbEvent = DBEvent();
+    dbEvent.initDb();
+
+    var coverPictureTest = AppData.imageContents[0];
+    var eventTest = Event(coverPictureTest, "1st event", "This is the first event", 1.0, 1.0);
+
+    var eventRes = await dbEvent.addEvent(eventTest);
+
+    var eventPic1 = AppData.imageContents[1];
+    eventPic1.eventId = eventRes.id;
+    var eventPic2 = AppData.imageContents[2];
+    eventPic2.eventId = eventRes.id;
+    dbEvent.addPicture(eventPic1);
+    dbEvent.addPicture(eventPic2);
+
+    dbEvent.close();
+
+    //test 
+
   }
 
   @override

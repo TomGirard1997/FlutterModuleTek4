@@ -1,15 +1,17 @@
 class Picture {
   int id = 0;
-  String data = "";
+  int eventId = 0;
+  String path = "";
   String name = "";
   String comment = "";
 
-  Picture(this.id, this.name, this.comment);
+  Picture(this.path, this.name, this.comment);
 
   Map<String, dynamic> toMap() {
     var map = <String, dynamic>{
+      'picture_event_id': this.eventId,
       'picture_name': name,
-      'picture_data': data,
+      'picture_path': path,
       'picture_comment': comment
     };
     
@@ -18,8 +20,9 @@ class Picture {
 
   Picture.fromMap(Map<String, dynamic> map) {
     id = map['picture_id'];
+    eventId = map['picture_event_id'];
     name = map['picture_name'];
-    data = map['picture_data'];
+    path = map['picture_path'];
     comment = map['picture_comment'];
   }
 }

@@ -6,8 +6,8 @@ class Event {
   int id = 0;
   String title = "";
   String description = "";
-  String lat = "";
-  String long = "";
+  num lat = 0.0;
+  num long = 0.0;
 
   Event(this.coverPicture, this.title, this.description, this.lat, this.long);
 

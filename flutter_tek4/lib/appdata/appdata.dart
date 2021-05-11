@@ -1,4 +1,4 @@
-// import 'package:flutter_tek4/models/image_content.dart';
+import 'package:flutter_tek4/models/picture.dart';
 import 'package:flutter_tek4/models/profile.dart';
 
 class AppData {
@@ -40,29 +40,14 @@ class AppData {
       totalFestivals: '1.2m',
     ),
   ];
-  // static List<ImageContent> imageContents = [
-  //   ImageContent(
-  //       imageUrl: 'assets/images/content/ben-ostrower-_N0MLYRVbfA-unsplash.jpg'),
-  //   ImageContent(
-  //       imageUrl: 'assets/images/content/david-clode-CW44ZN1c3j4-unsplash.jpg'),
-  //   ImageContent(
-  //       imageUrl: 'assets/images/content/devin-justesen-49YPssjmBMM-unsplash.jpg'),
-  //   ImageContent(
-  //       imageUrl: 'assets/images/content/johan-mouchet-VyZTJ_FRqJc-unsplash (1).jpg'),
-  //   ImageContent(
-  //       imageUrl: 'assets/images/content/matt-cramblett-NZHU5vfPo3M-unsplash.jpg'),
-  //   ImageContent(
-  //       imageUrl: 'assets/images/content/pau-casals-9ZrZU-GrIiw-unsplash.jpg'),
-  //   ImageContent(
-  //       imageUrl: 'assets/images/content/s-b-vonlanthen-D75_5tWZDQ4-unsplash.jpg'),
-  //   ImageContent(
-  //       imageUrl: 'assets/images/content/tyler-delgado-8XHeZTnMIfc-unsplash.jpg'),
-  //   ImageContent(
-  //       imageUrl: 'assets/images/content/wojtek-kwiatkowski-HVReRz9E0-I-unsplash.jpg'),
-  //   ImageContent(
-  //       imageUrl: 'assets/images/content/jason-wolf-gLb1K2OXQ00-unsplash.jpg'),
-  //   ImageContent(imageUrl: 'assets/images/content/hu-chen-60XLoOgwkfA-unsplash.jpg'),
-  //   ImageContent(
-  //       imageUrl: 'assets/images/content/timon-studler-4qmXhKJhSo4-unsplash.jpg'),
-  // ];
+  static List<Picture> imageContents = [
+    Picture(
+        'assets/images/content/ben-ostrower-_N0MLYRVbfA-unsplash.jpg', "image1", "Ceci est l'image 1"),
+    Picture(
+        'assets/images/content/david-clode-CW44ZN1c3j4-unsplash.jpg', "image2", "Ceci est l'image 2"),
+    Picture(
+        'assets/images/content/devin-justesen-49YPssjmBMM-unsplash.jpg', "image3", "Ceci est l'image 3"),
+    Picture(
+        'assets/images/content/johan-mouchet-VyZTJ_FRqJc-unsplash (1).jpg', "image4", "Ceci est l'image 4")
+  ];
 }

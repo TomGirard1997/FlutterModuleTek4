@@ -16,7 +16,7 @@ class UserProfile extends StatefulWidget {
 
 class _UserProfileState extends State<UserProfile> {
   late Profile profile;
-  late DBEvent dbEvent;
+  late DBHelper dbEvent;
   List<Picture>? pictures;
 
   @override

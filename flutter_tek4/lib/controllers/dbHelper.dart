@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io' as io;
 import 'package:flutter/material.dart';
+import 'package:flutter_tek4/models/profile.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path_provider/path_provider.dart';
@@ -21,7 +22,18 @@ class DBHelper {
   static const String EVENT_LAT = 'event_lat';
   static const String EVENT_LONG = 'event_long';
 
+  static const String PROFILE_ID = 'profile_id';
+  static const String PROFILE_FIRSTNAME = 'profile_firstname';
+  static const String PROFILE_LASTNAME = 'profile_lastname';
+  static const String PROFILE_TITLE = 'profile_title';
+  static const String PROFILE_SUBTITLE = 'profile_subtitle';
+  static const String PROFILE_TOTAL_ALBUMS = 'profile_totalAlbums';
+  static const String PROFILE_TOTAL_PICTURES = 'profile_totalPictures';
+  static const String PROFILE_TOTAL_FESTIVALS = 'profile_totalFestivals';
+  static const String PIC_PROFILE_ID = 'picture_profile_id';
 
+  static const String PROFILE_TABLE = 'ProfileTable';
+  static const String PROFILE_PIC_TABLE = 'ProfilePicTable';
   static const String EVENT_TABLE = 'EventTable';
   static const String PIC_TABLE = 'PicturesTable';
   static const String COVER_PIC_TABLE = 'CoverPictureTable';
@@ -45,6 +57,31 @@ class DBHelper {
   }
  
   _onCreate(Database db, int version) async {
+    await db.execute("""
+      CREATE TABLE $PROFILE_TABLE (
+        $PROFILE_ID INTEGER PRIMARY KEY,
+        $PROFILE_FIRSTNAME INTEGER,
+        $PROFILE_LASTNAME TEXT,
+        $PROFILE_TITLE TEXT,
+        $PROFILE_SUBTITLE TEXT,
+        $PROFILE_TOTAL_ALBUMS TEXT,
+        $PROFILE_TOTAL_PICTURES TEXT,
+        $PROFILE_TOTAL_FESTIVALS TEXT,
+      )
+      """);
+    await db.execute("""
+      CREATE TABLE $PROFILE_PIC_TABLE (
+        $PIC_ID INTEGER PRIMARY KEY,
+        $PIC_PROFILE_ID INTEGER,
+        $PIC_NAME TEXT,
+        $PIC_PATH TEXT,
+        $PIC_COMMENT TEXT,
+
+        FOREIGN KEY ($PIC_PROFILE_ID) REFERENCES $PROFILE_TABLE ($PROFILE_ID) 
+          ON DELETE NO ACTION ON UPDATE NO ACTION
+      )
+      """);
+
     await db.execute("""
       CREATE TABLE $PIC_TABLE (
         $PIC_ID INTEGER PRIMARY KEY,
@@ -82,6 +119,29 @@ class DBHelper {
       """);
 
   }
+
+  Future<Profile> addProfile(Profile profile) async {
+    var dbClient = await db;
+
+    profile.id = await dbClient!.insert(
+      PROFILE_TABLE,
+      profile.toMap()
+    );
+
+    return profile;
+  }
+
+  Future<Picture> addProfilePicture(Picture picture) async {
+    var dbClient = await db;
+
+    picture.id = await dbClient!.insert(
+      PROFILE_PIC_TABLE,
+      picture.toMap()
+    );
+
+    return picture;
+  }
+
 
   Future<Event> addEvent(Event event, Picture coverPic) async {
     var dbClient = await db;
@@ -164,6 +224,36 @@ class DBHelper {
     }
 
     return events;
+  }
+
+  Future<Profile?> getProfile() async {
+    var dbClient = await db;
+
+    List<Map<String, dynamic>> profileMap = await dbClient!.query(
+      PROFILE_TABLE,
+      columns: [PROFILE_ID, PROFILE_FIRSTNAME, PROFILE_LASTNAME, PROFILE_TITLE, PROFILE_SUBTITLE, PROFILE_TOTAL_ALBUMS, PROFILE_TOTAL_PICTURES, PROFILE_TOTAL_FESTIVALS, PIC_PROFILE_ID],
+      where: '$PROFILE_ID = ?',
+      whereArgs: [0],
+      limit: 1
+    );
+    List<Map<String, dynamic>> profilePictureMap = await dbClient.query(
+      PROFILE_PIC_TABLE,
+      columns: [PIC_ID, PIC_NAME, PIC_PATH, PIC_COMMENT],
+      where: '$PIC_PROFILE_ID = ?',
+      whereArgs: [0],
+      limit: 1
+    );
+
+    if (profileMap.length == 0) {
+      return null;
+    }
+    var profile = Profile.fromMap(profileMap[0]);
+    if (profilePictureMap.length != 0) {
+      var profilePicture = Picture.fromMap(profilePictureMap[0]);
+      profile.picture = profilePicture;
+    }
+
+    return profile;
   }
 
   Future<int> deletePicture(int pictureId) async {

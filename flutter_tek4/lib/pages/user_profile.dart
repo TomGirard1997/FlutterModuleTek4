@@ -1,8 +1,12 @@
 import 'dart:io';
+import 'package:flutter/widgets.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_tek4/appdata/appdata.dart';
 import 'package:flutter_tek4/models/profile.dart';
+import 'package:flutter_tek4/models/picture.dart';
+import 'package:flutter_tek4/models/event.dart';
+import 'package:flutter_tek4/controllers/dbHelper.dart';
 import 'package:image_picker/image_picker.dart';
 
 class UserProfile extends StatefulWidget {
@@ -12,15 +16,47 @@ class UserProfile extends StatefulWidget {
 
 class _UserProfileState extends State<UserProfile> {
   late Profile profile;
+  late DBEvent dbEvent;
+  List<Picture>? pictures;
 
   @override
-  void initState() {
-    profile = AppData.profiles[0];
+  initState() {
     super.initState();
+
+    profile = AppData.profiles[0];
+
+  }
+
+  Future initDb() async {
+    //test
+    WidgetsFlutterBinding.ensureInitialized();
+    dbEvent = DBHelper();
+    
+    var coverPictureTest = AppData.imageContents[0];
+    var eventTest = Event("1st event", "This is the first event", 1.0, 1.0);
+    
+    var eventRes = await dbEvent.addEvent(eventTest, coverPictureTest);
+    
+    var eventPic1 = AppData.imageContents[1];
+    eventPic1.eventId = eventRes.id;
+    var eventPic2 = AppData.imageContents[2];
+    eventPic2.eventId = eventRes.id;
+    dbEvent.addPicture(eventPic1);
+    dbEvent.addPicture(eventPic2);
+
+    var futurePicts = await dbEvent.getPicturesOfEvent(eventRes.id);
+    
+    setState(() {
+      pictures = futurePicts;
+    });
+    
+    //test 
   }
 
   @override
   Widget build(BuildContext context) {
+    initDb();
+
     return Scaffold(
       body: ListView(children: <Widget>[
         SizedBox(height: 20),
@@ -28,16 +64,17 @@ class _UserProfileState extends State<UserProfile> {
         SizedBox(height: 40),
         Container(
             child: Wrap(children: <Widget>[
-          for (int i = 0; i < AppData.imageContents.length; i++)
-            Container(
-              height: MediaQuery.of(context).size.width / 3,
-              width: MediaQuery.of(context).size.width / 3,
-              decoration: BoxDecoration(
-                  image: DecorationImage(
-                      image: AssetImage(AppData.imageContents[i].imageUrl),
-                      fit: BoxFit.cover)),
-            )
-        ]))
+            if (pictures != null)
+              for (int i = 0; i < pictures!.length; i++)
+                Container(
+                  height: MediaQuery.of(context).size.width / 3,
+                  width: MediaQuery.of(context).size.width / 3,
+                  decoration: BoxDecoration(
+                      image: DecorationImage(
+                          image: AssetImage(pictures![i].path),
+                          fit: BoxFit.cover)),
+                )
+          ]))
       ]),
     );
   }

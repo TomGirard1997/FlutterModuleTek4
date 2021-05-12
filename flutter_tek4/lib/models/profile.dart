@@ -14,4 +14,5 @@ class Profile {
     this.totalPictures = "",
     this.totalFestivals = "",
   });
+
 }

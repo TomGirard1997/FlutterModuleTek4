@@ -5,8 +5,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tek4/pages/user_profile.dart';
 import 'package:flutter_tek4/pages/settings_page.dart';
+import 'package:flutter_tek4/pages/home.dart';
 // import 'package:english_words/english_words.dart';
-import 'package:image_picker/image_picker.dart';
 
 void main() => runApp(const MyApp());
 
@@ -35,10 +35,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   static const TextStyle optionStyle = TextStyle(
       fontSize: 30, fontWeight: FontWeight.bold, fontFamily: 'Pacifico');
   static List<Widget> _widgetOptions = <Widget>[
-    Text(
-      'Home',
-      style: optionStyle,
-    ),
+    Home(),
     UserProfile(),
     Settings(),
   ];

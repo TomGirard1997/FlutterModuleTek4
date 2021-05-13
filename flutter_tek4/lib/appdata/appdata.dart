@@ -67,7 +67,7 @@ class AppData {
         imageUrl: 'assets/images/content/wojtek-kwiatkowski-HVReRz9E0-I-unsplash.jpg'),
     ImageContent(
         imageUrl: 'assets/images/content/jason-wolf-gLb1K2OXQ00-unsplash.jpg'),
-    ImageContent(imageUrl: 'images/content/hu-chen-60XLoOgwkfA-unsplash.jpg'),
+    ImageContent(imageUrl: 'assets/images/content/hu-chen-60XLoOgwkfA-unsplash.jpg'),
     ImageContent(
         imageUrl: 'assets/images/content/timon-studler-4qmXhKJhSo4-unsplash.jpg'),
   ];

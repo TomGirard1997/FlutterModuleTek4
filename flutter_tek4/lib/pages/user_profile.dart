@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_tek4/appdata/appdata.dart';
 import 'package:flutter_tek4/models/profile.dart';
-import 'package:camera/camera.dart';
 import 'package:image_picker/image_picker.dart';
 
 class UserProfile extends StatefulWidget {

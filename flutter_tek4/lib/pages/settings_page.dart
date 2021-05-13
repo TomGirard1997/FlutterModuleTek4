@@ -26,7 +26,9 @@ class _SettingsState extends State<Settings> {
                 margin: EdgeInsets.symmetric(horizontal: 56),
                 child: Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
-              Text('Dark Mode'),
+              Text('Dark Mode', style: TextStyle(
+                fontSize: 20
+              )),
               Switch(
                 value: isSwitched,
                 onChanged: (value) {
@@ -41,17 +43,25 @@ class _SettingsState extends State<Settings> {
             ])),
             SizedBox(height: 15),
             InkWell(
-              child: Text('Find out more about MemoriesBook'),
+              child: Text('Change language', 
+              style: TextStyle(
+                fontSize: 20
+              )),
               onTap: () {print("skuuurt");},
             ),
             SizedBox(height: 15),
             InkWell(
-              child: Text('Rules and legals notice'),
+              child: Text('Find out more about MemoriesBook',
+              style: TextStyle(
+                fontSize: 20
+              )),
               onTap: () {print("pull uuuuup");}
             ),
             SizedBox(height: 15),
             InkWell(
-              child: Text('Help'),
+              child: Text('Help',style: TextStyle(
+                fontSize: 20
+              )),
               onTap: () {print("big uuuuup");}
             ),
     ])));

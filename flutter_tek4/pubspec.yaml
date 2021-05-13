@@ -23,9 +23,10 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  hive: ^2.0.4
+  hive_flutter: ^1.0.0  
   shared_preferences: "2.0.5"
   provider: ^4.3.2+2
-  camera:
   path_provider:
   path:
 

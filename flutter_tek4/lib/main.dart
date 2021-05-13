@@ -6,17 +6,49 @@ import 'package:flutter/material.dart';
 import 'package:flutter_tek4/pages/user_profile.dart';
 import 'package:flutter_tek4/pages/settings_page.dart';
 import 'package:flutter_tek4/pages/home.dart';
+import 'package:flutter_tek4/services/config.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 // import 'package:english_words/english_words.dart';
 
-void main() => runApp(const MyApp());
+void main() async {
+  await Hive.initFlutter();
+  box = await Hive.openBox('myTheme');
+  runApp(MyApp());
+} 
 
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+class MyApp extends StatefulWidget {
+  @override
+  _MyState createState() => _MyState();
+}
+
+class _MyState extends State<MyApp>{
+  // const MyApp({Key? key}) : super(key: key);
+
+  @override
+  void initState() {
+    super.initState();
+    currentTheme.addListener(() {
+      print('changes');
+      setState((){});
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Memories Book',
-      theme: ThemeData(primaryColor: Colors.white, fontFamily: 'Pacifico'),
+      theme: ThemeData(
+          brightness: Brightness.light,
+            fontFamily: "Pacifico",
+            primaryColor: const Color(0xFF13172a),
+            accentColor: const Color(0xFFFFC117),),
+      darkTheme: ThemeData(
+          brightness: Brightness.dark,
+            fontFamily: "Pacifico",
+            primaryColor: const Color(0xFF13172a),
+            accentColor: const Color(0xFFFFFFFF),),
+      themeMode: currentTheme.currentTheme(),
       home: MyStatefulWidget(),
       debugShowCheckedModeBanner: false,
     );

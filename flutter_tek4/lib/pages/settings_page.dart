@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/semantics.dart';
 import 'package:flutter_tek4/appdata/appdata.dart';
+import 'package:flutter_tek4/services/config.dart';
 
 class Settings extends StatefulWidget {
   @override
@@ -17,30 +18,17 @@ class _SettingsState extends State<Settings> {
 
   @override
   Widget build(BuildContext context) {
-    bool isSwitched = false;
     return Scaffold(
+        floatingActionButton: FloatingActionButton.extended(
+            onPressed: () {
+                currentTheme.switchTheme();
+            },
+            label: Text('Switch Theme'),
+            icon: Icon(Icons.brightness_high),
+            ),  
         body: Center(
+          
             child: Column(children: <Widget>[
-            SizedBox(height: 30),
-            Container(
-                margin: EdgeInsets.symmetric(horizontal: 56),
-                child: Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-              Text('Dark Mode', style: TextStyle(
-                fontSize: 20
-              )),
-              Switch(
-                value: isSwitched,
-                onChanged: (value) {
-                  setState(() {
-                    isSwitched = value;
-                    print(isSwitched);
-                  });
-                },
-                activeTrackColor: Colors.lightGreenAccent,
-                activeColor: Colors.green,
-              ),
-            ])),
             SizedBox(height: 15),
             InkWell(
               child: Text('Change language', 
@@ -64,6 +52,7 @@ class _SettingsState extends State<Settings> {
               )),
               onTap: () {print("big uuuuup");}
             ),
+            
     ])));
   }
 }

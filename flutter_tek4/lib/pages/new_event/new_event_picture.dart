@@ -53,7 +53,6 @@ class MainSection extends StatelessWidget {
   void onSubmit(picture) {
     Picture? coverPicture = Picture(picture, "main picture", " ");
     event.coverPicture = coverPicture;
-    print(event.coverPicture!.path);
   }
 
   @override

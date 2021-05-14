@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/semantics.dart';
-import 'package:flutter_tek4/appdata/appdata.dart';
 import 'package:flutter_tek4/services/config.dart';
 
 class Settings extends StatefulWidget {

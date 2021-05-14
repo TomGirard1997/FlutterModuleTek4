@@ -44,6 +44,10 @@ SPEC CHECKSUMS:
   shared_preferences: af6bfa751691cdc24be3045c43ec037377ada40d
   sqflite: 6d358c025f5b867b29ed92fc697fd34924e11904
 
+<<<<<<< HEAD
 PODFILE CHECKSUM: 7adbc9d59f05e1b01f554ea99b6c79e97f2214a2
+=======
+PODFILE CHECKSUM: a56032f44f4d40b0a901ccf2b5c27cfd5e953d53
+>>>>>>> newEvent
 
 COCOAPODS: 1.10.1

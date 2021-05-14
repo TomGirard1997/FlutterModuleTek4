@@ -21,6 +21,7 @@ class DBHelper {
   static const String EVENT_TITLE = 'event_title';
   static const String EVENT_LAT = 'event_lat';
   static const String EVENT_LONG = 'event_long';
+  static const String EVENT_DATE = 'event_date';
 
   static const String PROFILE_ID = 'profile_id';
   static const String PROFILE_FIRSTNAME = 'profile_firstname';
@@ -37,7 +38,11 @@ class DBHelper {
   static const String PIC_TABLE = 'PicturesTable';
   static const String COVER_PIC_TABLE = 'CoverPictureTable';
 
+<<<<<<< HEAD
   static const String DB_NAME = 'flu.db';
+=======
+  static const String DB_NAME = 'f.db';
+>>>>>>> newEvent
  
   Future<Database?> get db async {
     if (_db != null) {
@@ -115,6 +120,7 @@ class DBHelper {
         $EVENT_ID INTEGER PRIMARY KEY,
         $EVENT_DESCR TEXT,
         $EVENT_TITLE TEXT,
+        $EVENT_DATE TEXT,
         $EVENT_LAT REAL,
         $EVENT_LONG REAL
       )
@@ -250,7 +256,7 @@ class DBHelper {
 
     List<Map<String, dynamic>> mapsEvents = await dbClient!.query(
       EVENT_TABLE,
-      columns: [EVENT_ID, EVENT_DESCR, EVENT_TITLE, EVENT_LAT, EVENT_LONG]
+      columns: [EVENT_ID, EVENT_DESCR, EVENT_TITLE, EVENT_LAT, EVENT_LONG, EVENT_DATE]
     );
     List<Map<String, dynamic>> mapsCoverPictures = await dbClient.query(
       COVER_PIC_TABLE,

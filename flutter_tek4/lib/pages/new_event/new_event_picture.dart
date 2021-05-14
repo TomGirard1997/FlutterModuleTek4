@@ -2,13 +2,22 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_tek4/pages/new_event/new_event_description.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:flutter_tek4/models/picture.dart';
+import 'package:flutter_tek4/models/event.dart';
 
 class NewEventPicture extends StatefulWidget {
+
+  NewEventPicture({@required this.name});
+  final name;
+
   @override
-  _NewEventPictureState createState() => _NewEventPictureState();
+  _NewEventPictureState createState() => _NewEventPictureState(name: name);
 }
 
 class _NewEventPictureState extends State<NewEventPicture> {
+
+  _NewEventPictureState({@required this.name});
+  final name;
 
   @override
   void initState() {
@@ -24,20 +33,28 @@ class _NewEventPictureState extends State<NewEventPicture> {
       ),
       body: ListView(children: <Widget>[
         SizedBox(height: 100),
-        HeaderSection(),
+        MainSection(name: name),
         SizedBox(height: 40),
       ]),
     );
   }
 }
 
-class HeaderSection extends StatelessWidget {
-  const HeaderSection({
-    Key? key,
-  }) : super(key: key);
+class MainSection extends StatelessWidget {
+
+  MainSection({@required this.name});
+
+  final name;
+  late final event = Event(this.name, "no description", "", 1.0, 1.0);
 
   static const TextStyle optionStyle = TextStyle(
       fontSize: 30, fontFamily: 'Pacifico');
+
+  void onSubmit(pickedFile) async {
+    var imageDatas = await pickedFile!.readAsBytes();
+    Picture? coverPicture = Picture(imageDatas, "main picture", " ");
+    event.coverPicture = coverPicture;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +66,7 @@ class HeaderSection extends StatelessWidget {
             style: optionStyle,
           ),
           SizedBox(height: 50),
-          TakePictureSection(),
+          TakePictureSection(onSubmit: this.onSubmit),
           SizedBox(height: 50),
           SizedBox(
               height: 50,
@@ -58,7 +75,7 @@ class HeaderSection extends StatelessWidget {
                 onPressed: () => {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => NewEventDescription()),
+                    MaterialPageRoute(builder: (context) => NewEventDescription(event: this.event)),
                   )
                 },
                 elevation: 2.0,
@@ -74,25 +91,25 @@ class HeaderSection extends StatelessWidget {
       ),
     );
   }
-
-  @override
-  State<StatefulWidget> createState() {
-    // TODO: implement createState
-    throw UnimplementedError();
-  }
 }
 
 class TakePictureSection extends StatefulWidget {
+
   const TakePictureSection({
-    Key? key,
+    Key? key, required this.onSubmit
   }) : super(key: key);
+
+  final Function onSubmit;
 
   @override
   _TakePictureSectionState createState() =>
-      _TakePictureSectionState();
+      _TakePictureSectionState(onSubmit: onSubmit);
 }
 
 class _TakePictureSectionState extends State<TakePictureSection> {
+  _TakePictureSectionState({required this.onSubmit});
+
+  final Function onSubmit;
   PickedFile? _pickedImage;
   final picker = ImagePicker();
 
@@ -106,12 +123,13 @@ class _TakePictureSectionState extends State<TakePictureSection> {
   }
 
   Future getImage() async {
-    final pickedFile = await picker.getImage(source: ImageSource.camera);
+    final pickedFile = await picker.getImage(source: ImageSource.gallery);
 
     setState(() {
       if (pickedFile != null) {
         _pickedImage = PickedFile(pickedFile.path);
         imageTodisplay = FileImage(File(_pickedImage!.path));
+        onSubmit(pickedFile);
       } else {
         print('No image selected.');
       }

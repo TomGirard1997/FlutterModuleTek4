@@ -1,13 +1,22 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:flutter_tek4/models/event.dart';
+import 'package:flutter_tek4/pages/home.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
+import 'package:flutter_tek4/controllers/dbHelper.dart';
 
 class NewEventDate extends StatefulWidget {
+  NewEventDate({@required this.event});
+  final event;
+
   @override
-  _NewEventDateState createState() => _NewEventDateState();
+  _NewEventDateState createState() => _NewEventDateState(event: this.event);
 }
 
 class _NewEventDateState extends State<NewEventDate> {
+
+  _NewEventDateState({@required this.event});
+  final event;
 
   @override
   void initState() {
@@ -23,7 +32,7 @@ class _NewEventDateState extends State<NewEventDate> {
       ),
       body: ListView(children: <Widget>[
         SizedBox(height: 100),
-        HeaderSection(),
+        HeaderSection(event: this.event),
         SizedBox(height: 40),
       ]),
     );
@@ -31,12 +40,33 @@ class _NewEventDateState extends State<NewEventDate> {
 }
 
 class HeaderSection extends StatelessWidget {
-  const HeaderSection({
-    Key? key,
+  HeaderSection({
+    Key? key, this.event
   }) : super(key: key);
+
+  final event;
+  late DBHelper dbEvent;
+  List<Picture>? pictures;
+
+  late final TextEditingController _dateController = TextEditingController();
 
   static const TextStyle optionStyle = TextStyle(
       fontSize: 30, fontFamily: 'Pacifico');
+
+  void save (DateTime date, BuildContext context) async {
+    WidgetsFlutterBinding.ensureInitialized();
+    dbEvent = DBHelper();
+
+    print('confirm $date');
+    var eventWithDate = this.event as Event;
+    eventWithDate.date = date.toString();
+    await dbEvent.addEvent(eventWithDate, this.event.coverPicture);
+    MaterialPageRoute(builder: (context) => Home());
+  }
+
+  void dispose() {
+    _dateController.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -52,15 +82,15 @@ class HeaderSection extends StatelessWidget {
             onPressed: () {
                 DatePicker.showDatePicker(context,
                                       showTitleActions: true,
-                                      minTime: DateTime(2015, 3, 5),
-                                      maxTime: DateTime(2022, 6, 7), onChanged: (date) {
-                                    print('change $date');
-                                  }, onConfirm: (date) {
-                                    print('confirm $date');
-                                  }, currentTime: DateTime.now(), locale: LocaleType.en);
+                                      minTime: DateTime(2018, 3, 5),
+                                      maxTime: DateTime(2022, 6, 7), 
+                                      onConfirm: (date) {
+                                        this.save(date, context);
+                                      }, 
+                                      currentTime: DateTime.now(), locale: LocaleType.en);
             },
             child: Text(
-                'show date time picker',
+                "select a date",
                 style: TextStyle(color: Colors.blue),
             )),
           SizedBox(height: 50),
@@ -82,11 +112,5 @@ class HeaderSection extends StatelessWidget {
         ])
       ),
     );
-  }
-
-  @override
-  State<StatefulWidget> createState() {
-    // TODO: implement createState
-    throw UnimplementedError();
   }
 }

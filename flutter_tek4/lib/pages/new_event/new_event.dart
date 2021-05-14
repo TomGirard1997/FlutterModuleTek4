@@ -29,10 +29,28 @@ class _NewEventState extends State<NewEvent> {
   }
 }
 
-class HeaderSection extends StatelessWidget {
+class HeaderSection extends StatefulWidget {
   const HeaderSection({
     Key? key,
   }) : super(key: key);
+
+  @override
+  _HeaderSectionState createState() => _HeaderSectionState();
+}
+
+class _HeaderSectionState extends State<HeaderSection> {
+  late TextEditingController _textController;
+
+  void initState() {
+    super.initState();
+    _textController = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    _textController.dispose();
+    super.dispose();
+  }
 
   static const TextStyle optionStyle = TextStyle(
       fontSize: 30, fontFamily: 'Pacifico');
@@ -48,6 +66,7 @@ class HeaderSection extends StatelessWidget {
           ),
           SizedBox(height: 50),
           TextField(
+            controller: _textController,
             decoration: const InputDecoration(
               hintText: 'Enter event name',
             ),
@@ -60,7 +79,7 @@ class HeaderSection extends StatelessWidget {
                 onPressed: () => {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => NewEventPicture()),
+                    MaterialPageRoute(builder: (context) => NewEventPicture(name: this._textController.text)),
                   )
                 },
                 elevation: 2.0,
@@ -77,9 +96,4 @@ class HeaderSection extends StatelessWidget {
     );
   }
 
-  @override
-  State<StatefulWidget> createState() {
-    // TODO: implement createState
-    throw UnimplementedError();
-  }
 }

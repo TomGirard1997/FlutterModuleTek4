@@ -45,13 +45,14 @@ class MainSection extends StatelessWidget {
   MainSection({@required this.name});
 
   final name;
-  late final event = Event(this.name, "no description", 1.0, 1.0);
+  late final event = Event(this.name, "no description", "", 1.0, 1.0);
 
   static const TextStyle optionStyle = TextStyle(
       fontSize: 30, fontFamily: 'Pacifico');
 
-  void onSubmit(picture) {
-    Picture? coverPicture = Picture(picture, "main picture", " ");
+  void onSubmit(pickedFile) async {
+    var imageDatas = await pickedFile!.readAsBytes();
+    Picture? coverPicture = Picture(imageDatas, "main picture", " ");
     event.coverPicture = coverPicture;
   }
 
@@ -122,13 +123,13 @@ class _TakePictureSectionState extends State<TakePictureSection> {
   }
 
   Future getImage() async {
-    final pickedFile = await picker.getImage(source: ImageSource.camera);
+    final pickedFile = await picker.getImage(source: ImageSource.gallery);
 
     setState(() {
       if (pickedFile != null) {
         _pickedImage = PickedFile(pickedFile.path);
         imageTodisplay = FileImage(File(_pickedImage!.path));
-        onSubmit(pickedFile.path);
+        onSubmit(pickedFile);
       } else {
         print('No image selected.');
       }

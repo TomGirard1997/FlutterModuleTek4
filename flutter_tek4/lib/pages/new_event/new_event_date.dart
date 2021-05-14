@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:flutter_tek4/models/event.dart';
 import 'package:flutter_tek4/pages/home.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:flutter_tek4/controllers/dbHelper.dart';
@@ -52,12 +53,14 @@ class HeaderSection extends StatelessWidget {
   static const TextStyle optionStyle = TextStyle(
       fontSize: 30, fontFamily: 'Pacifico');
 
-  void save (date) async {
+  void save (DateTime date, BuildContext context) async {
     WidgetsFlutterBinding.ensureInitialized();
     dbEvent = DBHelper();
 
     print('confirm $date');
-    await dbEvent.addEvent(this.event, this.event.coverPicture);
+    var eventWithDate = this.event as Event;
+    eventWithDate.date = date.toString();
+    await dbEvent.addEvent(eventWithDate, this.event.coverPicture);
     MaterialPageRoute(builder: (context) => Home());
   }
 
@@ -82,7 +85,7 @@ class HeaderSection extends StatelessWidget {
                                       minTime: DateTime(2018, 3, 5),
                                       maxTime: DateTime(2022, 6, 7), 
                                       onConfirm: (date) {
-                                        this.save(date);
+                                        this.save(date, context);
                                       }, 
                                       currentTime: DateTime.now(), locale: LocaleType.en);
             },

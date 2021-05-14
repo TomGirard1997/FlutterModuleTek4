@@ -1,12 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tek4/pages/new_event/new_event_date.dart';
+import 'package:flutter_tek4/models/event.dart';
 
 class NewEventDescription extends StatefulWidget {
+
+  NewEventDescription({@required this.event});
+  final event;
+
   @override
-  _NewEventDescriptionState createState() => _NewEventDescriptionState();
+  _NewEventDescriptionState createState() => _NewEventDescriptionState(event: event);
 }
 
 class _NewEventDescriptionState extends State<NewEventDescription> {
+
+  _NewEventDescriptionState({@required this.event});
+  final event;
 
   @override
   void initState() {
@@ -22,7 +30,7 @@ class _NewEventDescriptionState extends State<NewEventDescription> {
       ),
       body: ListView(children: <Widget>[
         SizedBox(height: 100),
-        HeaderSection(),
+        HeaderSection(event: event),
         SizedBox(height: 40),
       ]),
     );
@@ -30,12 +38,18 @@ class _NewEventDescriptionState extends State<NewEventDescription> {
 }
 
 class HeaderSection extends StatelessWidget {
-  const HeaderSection({
-    Key? key,
-  }) : super(key: key);
+
+  HeaderSection({required this.event});
+
+  final Event event;
+  late final TextEditingController _textController = TextEditingController();
 
   static const TextStyle optionStyle = TextStyle(
       fontSize: 30, fontFamily: 'Pacifico');
+
+  void dispose() {
+    _textController.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -48,6 +62,7 @@ class HeaderSection extends StatelessWidget {
           ),
           SizedBox(height: 50),
           TextFormField(
+            controller: _textController,
             minLines: 3 , // any number you need (It works as the rows for the textarea)
             keyboardType: TextInputType.multiline,
             maxLines: null,
@@ -61,9 +76,11 @@ class HeaderSection extends StatelessWidget {
               width: 50,
               child: RawMaterialButton(
                 onPressed: () => {
+                  print(this.event.title),
+                  this.event.description = _textController.text,
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => NewEventDate()),
+                    MaterialPageRoute(builder: (context) => NewEventDate(event: this.event)),
                   )
                 },
                 elevation: 2.0,
@@ -78,11 +95,5 @@ class HeaderSection extends StatelessWidget {
         ])
       ),
     );
-  }
-
-  @override
-  State<StatefulWidget> createState() {
-    // TODO: implement createState
-    throw UnimplementedError();
   }
 }

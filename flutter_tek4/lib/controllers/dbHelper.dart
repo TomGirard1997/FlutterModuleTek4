@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:io' as io;
-import 'package:flutter/material.dart';
 import 'package:flutter_tek4/models/profile.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
@@ -12,9 +11,10 @@ class DBHelper {
   static Database? _db;
   static const String PIC_ID = 'picture_id';
   static const String PIC_NAME = 'picture_name';
-  static const String PIC_PATH = 'picture_path';
+  static const String PIC_DATA = 'picture_data';
   static const String PIC_COMMENT = 'picture_comment';
   static const String PIC_EVENT_ID = 'picture_event_id';
+  static const String PIC_PROFILE_ID = 'picture_profile_id';
 
   static const String EVENT_ID = 'event_id';
   static const String EVENT_DESCR = 'event_description';
@@ -27,10 +27,9 @@ class DBHelper {
   static const String PROFILE_LASTNAME = 'profile_lastname';
   static const String PROFILE_TITLE = 'profile_title';
   static const String PROFILE_SUBTITLE = 'profile_subtitle';
-  static const String PROFILE_TOTAL_ALBUMS = 'profile_totalAlbums';
+  static const String PROFILE_TOTAL_EVENTS = 'profile_totalEvents';
   static const String PROFILE_TOTAL_PICTURES = 'profile_totalPictures';
   static const String PROFILE_TOTAL_FESTIVALS = 'profile_totalFestivals';
-  static const String PIC_PROFILE_ID = 'picture_profile_id';
 
   static const String PROFILE_TABLE = 'ProfileTable';
   static const String PROFILE_PIC_TABLE = 'ProfilePicTable';
@@ -38,7 +37,7 @@ class DBHelper {
   static const String PIC_TABLE = 'PicturesTable';
   static const String COVER_PIC_TABLE = 'CoverPictureTable';
 
-  static const String DB_NAME = 'event.db';
+  static const String DB_NAME = 'flu.db';
  
   Future<Database?> get db async {
     if (_db != null) {
@@ -60,21 +59,22 @@ class DBHelper {
     await db.execute("""
       CREATE TABLE $PROFILE_TABLE (
         $PROFILE_ID INTEGER PRIMARY KEY,
-        $PROFILE_FIRSTNAME INTEGER,
+        $PROFILE_FIRSTNAME TEXT,
         $PROFILE_LASTNAME TEXT,
         $PROFILE_TITLE TEXT,
         $PROFILE_SUBTITLE TEXT,
-        $PROFILE_TOTAL_ALBUMS TEXT,
-        $PROFILE_TOTAL_PICTURES TEXT,
-        $PROFILE_TOTAL_FESTIVALS TEXT,
+        $PROFILE_TOTAL_EVENTS INTEGER,
+        $PROFILE_TOTAL_PICTURES INTEGER,
+        $PROFILE_TOTAL_FESTIVALS INTEGER
       )
       """);
     await db.execute("""
       CREATE TABLE $PROFILE_PIC_TABLE (
         $PIC_ID INTEGER PRIMARY KEY,
         $PIC_PROFILE_ID INTEGER,
+        $PIC_EVENT_ID INTEGER,
         $PIC_NAME TEXT,
-        $PIC_PATH TEXT,
+        $PIC_DATA BLOB,
         $PIC_COMMENT TEXT,
 
         FOREIGN KEY ($PIC_PROFILE_ID) REFERENCES $PROFILE_TABLE ($PROFILE_ID) 
@@ -86,8 +86,9 @@ class DBHelper {
       CREATE TABLE $PIC_TABLE (
         $PIC_ID INTEGER PRIMARY KEY,
         $PIC_EVENT_ID INTEGER,
+        $PIC_PROFILE_ID INTEGER,
         $PIC_NAME TEXT,
-        $PIC_PATH TEXT,
+        $PIC_DATA BLOB,
         $PIC_COMMENT TEXT,
 
         FOREIGN KEY ($PIC_EVENT_ID) REFERENCES $EVENT_TABLE ($EVENT_ID) 
@@ -99,8 +100,9 @@ class DBHelper {
       CREATE TABLE $COVER_PIC_TABLE (
         $PIC_ID INTEGER PRIMARY KEY,
         $PIC_EVENT_ID INTEGER,
+        $PIC_PROFILE_ID INTEGER,
         $PIC_NAME TEXT,
-        $PIC_PATH TEXT,
+        $PIC_DATA BLOB,
         $PIC_COMMENT TEXT,
 
         FOREIGN KEY ($PIC_EVENT_ID) REFERENCES $EVENT_TABLE ($EVENT_ID) 
@@ -123,10 +125,20 @@ class DBHelper {
   Future<Profile> addProfile(Profile profile) async {
     var dbClient = await db;
 
-    profile.id = await dbClient!.insert(
-      PROFILE_TABLE,
-      profile.toMap()
-    );
+    var profileInDb = await getProfile();
+    if (profileInDb != null) {
+      profile.id = await dbClient!.update(
+        PROFILE_TABLE,
+        profile.toMap(),
+        where: "$PROFILE_ID = ?",
+        whereArgs: [1]
+      );
+    } else {
+      profile.id = await dbClient!.insert(
+        PROFILE_TABLE,
+        profile.toMap()
+      );
+    }
 
     return profile;
   }
@@ -134,10 +146,22 @@ class DBHelper {
   Future<Picture> addProfilePicture(Picture picture) async {
     var dbClient = await db;
 
+  var profileInDb = await getProfile();
+  if (profileInDb != null && profileInDb.picture != null) {
+    picture.profileId = 1;
+    picture.id = await dbClient!.update(
+      PROFILE_PIC_TABLE,
+      picture.toMap(),
+      where: "$PIC_PROFILE_ID = ?",
+      whereArgs: [1]
+    );
+  } else {
+    picture.profileId = 1;
     picture.id = await dbClient!.insert(
       PROFILE_PIC_TABLE,
       picture.toMap()
     );
+  }
 
     return picture;
   }
@@ -165,13 +189,31 @@ class DBHelper {
 
     return eventPicture;
   }
+
+  Future<int> getTotalEvents() async {
+    var dbClient = await db;
+    var nbEvents = 0;
+
+    nbEvents = Sqflite.firstIntValue(await dbClient!.rawQuery('SELECT COUNT(*) FROM $EVENT_TABLE'));
+
+    return nbEvents;
+  }
+
+    Future<int> getTotalPictures() async {
+    var dbClient = await db;
+    var nbPictures = 0;
+
+    nbPictures = Sqflite.firstIntValue(await dbClient!.rawQuery('SELECT COUNT(*) FROM $PIC_TABLE'));
+
+    return nbPictures;
+  }
  
   Future<List<Picture>> getPicturesOfEvent(int eventId) async {
     var dbClient = await db;
 
     List<Map<String, dynamic>> mapsPictures = await dbClient!.query(
       PIC_TABLE,
-      columns: [PIC_ID, PIC_NAME, PIC_PATH, PIC_COMMENT],
+      columns: [PIC_ID, PIC_NAME, PIC_DATA, PIC_COMMENT],
       where: '$PIC_EVENT_ID = ?', whereArgs: [eventId]
     );
     List<Picture> eventPictures = [];
@@ -190,7 +232,7 @@ class DBHelper {
 
     List<Map<String, dynamic>> mapsPictures = await dbClient!.query(
       PIC_TABLE,
-      columns: [PIC_ID, PIC_NAME, PIC_PATH, PIC_COMMENT]
+      columns: [PIC_ID, PIC_NAME, PIC_DATA, PIC_COMMENT]
     );
     List<Picture> eventPictures = [];
 
@@ -212,7 +254,7 @@ class DBHelper {
     );
     List<Map<String, dynamic>> mapsCoverPictures = await dbClient.query(
       COVER_PIC_TABLE,
-      columns: [PIC_ID, PIC_NAME, PIC_PATH, PIC_COMMENT]
+      columns: [PIC_ID, PIC_NAME, PIC_DATA, PIC_COMMENT]
     );
     List<Event> events = [];
 
@@ -231,23 +273,22 @@ class DBHelper {
 
     List<Map<String, dynamic>> profileMap = await dbClient!.query(
       PROFILE_TABLE,
-      columns: [PROFILE_ID, PROFILE_FIRSTNAME, PROFILE_LASTNAME, PROFILE_TITLE, PROFILE_SUBTITLE, PROFILE_TOTAL_ALBUMS, PROFILE_TOTAL_PICTURES, PROFILE_TOTAL_FESTIVALS, PIC_PROFILE_ID],
+      columns: [PROFILE_ID, PROFILE_FIRSTNAME, PROFILE_LASTNAME, PROFILE_TITLE, PROFILE_SUBTITLE, PROFILE_TOTAL_EVENTS, PROFILE_TOTAL_PICTURES, PROFILE_TOTAL_FESTIVALS],
       where: '$PROFILE_ID = ?',
-      whereArgs: [0],
-      limit: 1
+      whereArgs: [1]
     );
     List<Map<String, dynamic>> profilePictureMap = await dbClient.query(
       PROFILE_PIC_TABLE,
-      columns: [PIC_ID, PIC_NAME, PIC_PATH, PIC_COMMENT],
+      columns: [PIC_ID, PIC_NAME, PIC_DATA, PIC_COMMENT],
       where: '$PIC_PROFILE_ID = ?',
-      whereArgs: [0],
-      limit: 1
+      whereArgs: [1]
     );
 
     if (profileMap.length == 0) {
       return null;
     }
     var profile = Profile.fromMap(profileMap[0]);
+
     if (profilePictureMap.length != 0) {
       var profilePicture = Picture.fromMap(profilePictureMap[0]);
       profile.picture = profilePicture;

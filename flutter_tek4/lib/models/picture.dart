@@ -1,19 +1,21 @@
+import 'dart:typed_data';
+
 class Picture {
   int id = 0;
   int eventId = 0;
   int profileId = 0;
-  String path = "";
+  Uint8List? data;
   String name = "";
   String comment = "";
 
-  Picture(this.path, this.name, this.comment);
+  Picture(this.data, this.name, this.comment);
 
   Map<String, dynamic> toMap() {
     var map = <String, dynamic>{
       'picture_event_id': eventId,
       'picture_profile_id': profileId,
       'picture_name': name,
-      'picture_path': path,
+      'picture_data': data,
       'picture_comment': comment
     };
     
@@ -25,7 +27,7 @@ class Picture {
     eventId = map['picture_event_id'];
     profileId = map['picture_profile_id'];
     name = map['picture_name'];
-    path = map['picture_path'];
+    data = map['picture_data'];
     comment = map['picture_comment'];
   }
 }

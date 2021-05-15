@@ -53,7 +53,7 @@ class HeaderSection extends StatelessWidget {
                   )
                 },
                 elevation: 2.0,
-                fillColor: Colors.white,
+                fillColor: Colors.grey,
                 child: Icon(
                   Icons.add_photo_alternate_outlined,
                   size: 30.0,

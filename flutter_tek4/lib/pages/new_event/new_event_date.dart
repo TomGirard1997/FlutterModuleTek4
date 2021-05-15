@@ -61,7 +61,10 @@ class HeaderSection extends StatelessWidget {
     var eventWithDate = this.event as Event;
     eventWithDate.date = date.toString();
     await dbEvent.addEvent(eventWithDate, this.event.coverPicture);
-    MaterialPageRoute(builder: (context) => Home());
+    Navigator.pop(context);
+    Navigator.pop(context);
+    Navigator.pop(context);
+    Navigator.pop(context);
   }
 
   void dispose() {

@@ -64,7 +64,9 @@ class _HeaderSectionState extends State<HeaderSection> {
     if (date != null) {
       print('confirm $date');
       var eventWithDate = this.widget.event as Event;
-      eventWithDate.date = date.toString();
+      var day = date.day < 10 ? '0${date.day}' : date.day;
+      var month = date.month < 10 ? '0${date.day}' : date.month;
+      eventWithDate.date = '$day/$month/${date.year}';
       await dbEvent.addEvent(eventWithDate, this.widget.event.coverPicture);
     } else {
       this.widget.event.date = "";

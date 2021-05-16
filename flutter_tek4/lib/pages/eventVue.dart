@@ -86,6 +86,10 @@ class _HeaderSectionState extends State<HeaderSection> {
       child: Center(
         child: Column(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
           Text(
+            widget.event.date,
+            style: HeaderSection.descriptionStyle,
+          ),
+          Text(
             widget.event.title,
             style: HeaderSection.titleStyle,
           ),
@@ -112,7 +116,7 @@ class _HeaderSectionState extends State<HeaderSection> {
                   showDialog(
                     context: context,
                     builder: (_) {
-                      return MyDialog(event: event);
+                      return MyDialog(event: event, submit: initDatas);
                     }
                   );
                 },
@@ -179,15 +183,21 @@ class PictureItemSection extends StatelessWidget {
 
 
 class MyDialog extends StatefulWidget {
-  MyDialog({required this.event});
+  MyDialog({required this.event, required this.submit});
+
   final Event event;
+  final Function submit;
+
   @override
-  _MyDialogState createState() => new _MyDialogState(event: event);
+  _MyDialogState createState() => new _MyDialogState(event: event, submit: submit);
 }
 
 class _MyDialogState extends State<MyDialog> {
-  _MyDialogState({required this.event});
+  _MyDialogState({required this.event, required this.submit});
+
   final Event event;
+  final Function submit;
+
   late final pickedFile;
   Profile? profile;
   DBHelper dbClient = DBHelper();
@@ -212,12 +222,12 @@ class _MyDialogState extends State<MyDialog> {
   }
 
   PickedFile? _pickedImage;
-    final picker = ImagePicker();
-    ImageProvider<Object>? imageTodisplay = AssetImage('assets/images/content/hu-chen-60XLoOgwkfA-unsplash.jpg');
-    var comment;
-    var name;
+  final picker = ImagePicker();
+  ImageProvider<Object>? imageTodisplay = AssetImage('assets/images/content/hu-chen-60XLoOgwkfA-unsplash.jpg');
+  var comment;
+  var name;
 
-    void save(context) async {
+  void save(context) async {
       var imageDatas = await pickedFile!.readAsBytes();
       var picture = Picture(imageDatas, name, comment);
       print("event id: ${event.id} profile id : ${profile!.id}" );
@@ -225,7 +235,8 @@ class _MyDialogState extends State<MyDialog> {
       picture.profileId = profile!.id;
       dbClient.addPicture(picture);
       Navigator.of(context).pop();
-    }
+      submit();
+  }
 
     Future getImage() async {
       pickedFile = await picker.getImage(source: ImageSource.gallery);

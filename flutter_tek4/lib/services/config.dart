@@ -4,3 +4,4 @@ import 'package:hive/hive.dart';
 
 MyTheme currentTheme = MyTheme();
 Box box = Hive.box('myTheme');
+double custFontSize = 20;

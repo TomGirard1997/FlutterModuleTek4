@@ -39,36 +39,41 @@ class _NewEventDateState extends State<NewEventDate> {
   }
 }
 
-class HeaderSection extends StatelessWidget {
+class HeaderSection extends StatefulWidget {
   HeaderSection({
     Key? key, this.event
   }) : super(key: key);
 
   final event;
-  late DBHelper dbEvent;
-  List<Picture>? pictures;
-
-  late final TextEditingController _dateController = TextEditingController();
-
   static const TextStyle optionStyle = TextStyle(
       fontSize: 30, fontFamily: 'Pacifico');
 
-  void save (DateTime date, BuildContext context) async {
+  @override
+  _HeaderSectionState createState() => _HeaderSectionState();
+}
+
+class _HeaderSectionState extends State<HeaderSection> {
+  late DBHelper dbEvent;
+
+  List<Picture>? pictures;
+
+  void save (DateTime? date, BuildContext context) async {
     WidgetsFlutterBinding.ensureInitialized();
     dbEvent = DBHelper();
 
-    print('confirm $date');
-    var eventWithDate = this.event as Event;
-    eventWithDate.date = date.toString();
-    await dbEvent.addEvent(eventWithDate, this.event.coverPicture);
+    if (date != null) {
+      print('confirm $date');
+      var eventWithDate = this.widget.event as Event;
+      eventWithDate.date = date.toString();
+      await dbEvent.addEvent(eventWithDate, this.widget.event.coverPicture);
+    } else {
+      this.widget.event.date = "";
+      await dbEvent.addEvent(this.widget.event, this.widget.event.coverPicture);
+    }
     Navigator.pop(context);
     Navigator.pop(context);
     Navigator.pop(context);
     Navigator.pop(context);
-  }
-
-  void dispose() {
-    _dateController.dispose();
   }
 
   @override
@@ -78,15 +83,15 @@ class HeaderSection extends StatelessWidget {
         child: Column(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
           Text(
             'Event date :',
-            style: optionStyle,
+            style: HeaderSection.optionStyle,
           ),
           SizedBox(height: 50),
           TextButton(
             onPressed: () {
                 DatePicker.showDatePicker(context,
                                       showTitleActions: true,
-                                      minTime: DateTime(2018, 3, 5),
-                                      maxTime: DateTime(2022, 6, 7), 
+                                      minTime: DateTime(2010, 3, 5),
+                                      maxTime: DateTime(2030, 6, 7),
                                       onConfirm: (date) {
                                         this.save(date, context);
                                       }, 
@@ -102,6 +107,7 @@ class HeaderSection extends StatelessWidget {
               width: 50,
               child: RawMaterialButton(
                 onPressed: () => {
+                  save(null, context)
                 },
                 elevation: 2.0,
                 fillColor: Colors.white,

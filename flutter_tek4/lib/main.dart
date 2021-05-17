@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_tek4/pages/user_profile.dart';
 import 'package:flutter_tek4/pages/settings_page.dart';
 import 'package:flutter_tek4/pages/home.dart';
+import 'package:flutter_tek4/pages/map.dart';
 import 'package:flutter_tek4/services/config.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -15,14 +16,14 @@ void main() async {
   await Hive.initFlutter();
   box = await Hive.openBox('myTheme');
   runApp(MyApp());
-} 
+}
 
 class MyApp extends StatefulWidget {
   @override
   _MyState createState() => _MyState();
 }
 
-class _MyState extends State<MyApp>{
+class _MyState extends State<MyApp> {
   // const MyApp({Key? key}) : super(key: key);
 
   @override
@@ -30,7 +31,7 @@ class _MyState extends State<MyApp>{
     super.initState();
     currentTheme.addListener(() {
       print('changes');
-      setState((){});
+      setState(() {});
     });
   }
 
@@ -39,15 +40,17 @@ class _MyState extends State<MyApp>{
     return MaterialApp(
       title: 'Memories Book',
       theme: ThemeData(
-          brightness: Brightness.light,
-            fontFamily: "Pacifico",
-            primaryColor: const Color(0xFF13172a),
-            accentColor: const Color(0xFFFFC117),),
+        brightness: Brightness.light,
+        fontFamily: "Pacifico",
+        primaryColor: Color(0xFF13172a),
+        accentColor: Color(0xFFFFC117),
+      ),
       darkTheme: ThemeData(
           brightness: Brightness.dark,
-            fontFamily: "Pacifico",
-            primaryColor: const Color(0xFF13172a),
-            accentColor: const Color(0xFFFFFFFF),),
+          fontFamily: "Pacifico",
+          primaryColor: Color(0xFF13172a),
+          accentColor: Color(0xFFFFFFFF),
+          canvasColor: Colors.black87),
       themeMode: currentTheme.currentTheme(),
       home: MyStatefulWidget(),
       debugShowCheckedModeBanner: false,
@@ -64,11 +67,10 @@ class MyStatefulWidget extends StatefulWidget {
 
 class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   int _selectedIndex = 0;
-  static const TextStyle optionStyle = TextStyle(
-      fontSize: 30, fontWeight: FontWeight.bold, fontFamily: 'Pacifico');
   static List<Widget> _widgetOptions = <Widget>[
     Home(),
     UserProfile(),
+    MapSample(),
     Settings(),
   ];
 
@@ -89,22 +91,36 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
         child: _widgetOptions.elementAt(_selectedIndex),
       ),
       bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
+        items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
+            backgroundColor: Theme.of(context).primaryColor,
             icon: Icon(Icons.home),
             label: 'Home',
           ),
           BottomNavigationBarItem(
+            backgroundColor: Theme.of(context).primaryColor,
             icon: Icon(Icons.perm_identity),
             label: 'Profile',
           ),
           BottomNavigationBarItem(
+            backgroundColor: Theme.of(context).primaryColor,
+            icon: Icon(Icons.public),
+            label: 'Map',
+          ),
+          BottomNavigationBarItem(
+            backgroundColor: Theme.of(context).primaryColor,
             icon: Icon(Icons.settings),
             label: 'Settings',
           ),
         ],
         currentIndex: _selectedIndex,
         selectedItemColor: Colors.amber[800],
+        unselectedItemColor: currentTheme.currentTheme() == ThemeMode.dark
+            ? Theme.of(context).accentColor
+            : Color(0xFFFFFFFF),
+        unselectedLabelStyle: TextStyle(color: Theme.of(context).accentColor),
+        showUnselectedLabels: true,
+        elevation: 2,
         onTap: _onItemTapped,
       ),
     );

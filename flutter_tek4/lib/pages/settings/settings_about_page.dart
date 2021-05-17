@@ -43,11 +43,11 @@ class AboutUs extends StatelessWidget {
             SizedBox(height: 20),
             Row(mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Image.asset('../../../assets/images/socialmedias/instagram.png',	
+              Image.asset('assets/images/socialmedias/instagram.png',	
               height: 100,
               width: 100,),
               SizedBox(width: 20),
-              Image.asset('../../../assets/images/socialmedias/twitter.png',	
+              Image.asset('assets/images/socialmedias/twitter.png',	
               height: 100,
               width: 100,)
             ]

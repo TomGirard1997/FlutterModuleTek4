@@ -102,8 +102,6 @@ class _TakePictureSectionState extends State<TakePictureSection> {
         _pickedImage = PickedFile(pickedFile.path);
         imageTodisplay = FileImage(File(_pickedImage!.path));
         onSubmit(pickedFile);
-      } else {
-        print('No image selected.');
       }
     });
   }

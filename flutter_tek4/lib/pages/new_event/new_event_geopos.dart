@@ -66,7 +66,6 @@ class _EventGeoposScreenState extends State<EventGeoposScreen> {
   }
 
   void handleTap(LatLng point) {
-    print(point);
     setState(() {
       _markers.add(Marker(
         markerId: MarkerId(point.toString()),

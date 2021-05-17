@@ -85,7 +85,6 @@ class CheckIconEventDescr extends StatelessWidget {
         width: 50,
         child: RawMaterialButton(
           onPressed: () => {
-            print(this.event.title),
             this.event.description = _textController.text,
             Navigator.push(
               context,

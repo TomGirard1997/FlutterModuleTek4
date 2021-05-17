@@ -52,12 +52,10 @@ class _EventDateScreenState extends State<EventDateScreen> {
     dbEvent = DBHelper();
 
     if (date != null) {
-      print('confirm $date');
       var eventWithDate = this.widget.event as Event;
-      eventWithDate.date = date.toString();
-      print("coverPicture");
-
-      print(this.widget.event.coverPicture);
+      var day = date.day < 10 ? '0${date.day}' : date.day;
+      var month = date.month < 10 ? '0${date.month}' : date.month;
+      eventWithDate.date = '$day/$month/${date.year}';
       await dbEvent.addEvent(eventWithDate, this.widget.event.coverPicture);
     } else {
       this.widget.event.date = "";

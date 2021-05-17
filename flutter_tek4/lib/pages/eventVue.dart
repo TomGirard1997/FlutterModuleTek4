@@ -211,7 +211,6 @@ class _MyDialogState extends State<MyDialog> {
   void save(context) async {
     var imageDatas = await pickedFile!.readAsBytes();
     var picture = Picture(imageDatas, name, comment);
-    print("event id: ${event.id} profile id : ${profile!.id}");
     picture.eventId = event.id;
     picture.profileId = profile!.id;
     dbClient.addPicture(picture);
@@ -226,8 +225,6 @@ class _MyDialogState extends State<MyDialog> {
       if (pickedFile != null) {
         _pickedImage = PickedFile(pickedFile.path);
         imageTodisplay = FileImage(File(_pickedImage!.path));
-      } else {
-        print('No image selected.');
       }
     });
   }

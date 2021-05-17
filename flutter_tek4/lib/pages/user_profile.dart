@@ -113,7 +113,6 @@ class _HeaderSectionState extends State<HeaderSection> {
               new TextButton(
                   child: new Text('Submit'),
                   onPressed: () {
-                    print("(submit profile) firstname" + profile!.firstname);
                     dbClient.addProfile(profile!);
                     Navigator.of(context).pop();
                   })
@@ -239,8 +238,6 @@ class _TakeProfilePictureSectionState extends State<TakeProfilePictureSection> {
           dbClient.addProfilePicture(profilePictureToInsert);
 
           profilePicture = FileImage(File(_pickedImage!.path));
-        } else {
-          print('No image selected.');
         }
       });
     }

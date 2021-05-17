@@ -1,5 +1,4 @@
 import '../constants/import.dart';
-
 import "package:sqflite/sqflite.dart";
 import 'package:path/path.dart';
 
@@ -236,11 +235,6 @@ class DBHelper {
           EVENT_DATE
         ]);
     List<Event> events = [];
-
-    print("mapsEvents: ");
-    print(mapsEvents);
-    print("coverPictures: ");
-    print(mapsCoverPictures);
 
     if (mapsEvents.length > 0) {
       for (int i = 0; i < mapsEvents.length; i++) {

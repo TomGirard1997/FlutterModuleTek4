@@ -38,12 +38,14 @@ class DBHelper {
   static const String PIC_TABLE = 'PicturesTable';
   static const String COVER_PIC_TABLE = 'CoverPictureTable';
 
-<<<<<<< HEAD
-  static const String DB_NAME = 'flu.db';
-=======
-  static const String DB_NAME = 'f.db';
->>>>>>> newEvent
- 
+  // static const String DB_NAME = 'flu.db';
+
+  // static const String DB_NAME = 'f.db';
+
+  // static const String DB_NAME = 'test.db';
+
+  static const String DB_NAME = 'test4.db';
+
   Future<Database?> get db async {
     if (_db != null) {
       return _db;
@@ -51,7 +53,7 @@ class DBHelper {
     _db = await initDb();
     return _db;
   }
- 
+
   initDb() async {
     io.Directory documentsDirectory = await getApplicationDocumentsDirectory();
     String path = join(documentsDirectory.path, DB_NAME);
@@ -59,7 +61,7 @@ class DBHelper {
 
     return db;
   }
- 
+
   _onCreate(Database db, int version) async {
     await db.execute("""
       CREATE TABLE $PROFILE_TABLE (
@@ -125,7 +127,6 @@ class DBHelper {
         $EVENT_LONG REAL
       )
       """);
-
   }
 
   Future<Profile> addProfile(Profile profile) async {
@@ -133,17 +134,10 @@ class DBHelper {
 
     var profileInDb = await getProfile();
     if (profileInDb != null) {
-      profile.id = await dbClient!.update(
-        PROFILE_TABLE,
-        profile.toMap(),
-        where: "$PROFILE_ID = ?",
-        whereArgs: [1]
-      );
+      profile.id = await dbClient!.update(PROFILE_TABLE, profile.toMap(),
+          where: "$PROFILE_ID = ?", whereArgs: [1]);
     } else {
-      profile.id = await dbClient!.insert(
-        PROFILE_TABLE,
-        profile.toMap()
-      );
+      profile.id = await dbClient!.insert(PROFILE_TABLE, profile.toMap());
     }
 
     return profile;
@@ -152,34 +146,23 @@ class DBHelper {
   Future<Picture> addProfilePicture(Picture picture) async {
     var dbClient = await db;
 
-  var profileInDb = await getProfile();
-  if (profileInDb != null && profileInDb.picture != null) {
-    picture.profileId = 1;
-    picture.id = await dbClient!.update(
-      PROFILE_PIC_TABLE,
-      picture.toMap(),
-      where: "$PIC_PROFILE_ID = ?",
-      whereArgs: [1]
-    );
-  } else {
-    picture.profileId = 1;
-    picture.id = await dbClient!.insert(
-      PROFILE_PIC_TABLE,
-      picture.toMap()
-    );
-  }
+    var profileInDb = await getProfile();
+    if (profileInDb != null && profileInDb.picture != null) {
+      picture.profileId = 1;
+      picture.id = await dbClient!.update(PROFILE_PIC_TABLE, picture.toMap(),
+          where: "$PIC_PROFILE_ID = ?", whereArgs: [1]);
+    } else {
+      picture.profileId = 1;
+      picture.id = await dbClient!.insert(PROFILE_PIC_TABLE, picture.toMap());
+    }
 
     return picture;
   }
 
-
   Future<Event> addEvent(Event event, Picture coverPic) async {
     var dbClient = await db;
 
-    event.id = await dbClient!.insert(
-      EVENT_TABLE,
-      event.toMap()
-    );
+    event.id = await dbClient!.insert(EVENT_TABLE, event.toMap());
     coverPic.id = event.id;
     await dbClient.insert(COVER_PIC_TABLE, coverPic.toMap());
 
@@ -188,10 +171,7 @@ class DBHelper {
 
   Future<Picture> addPicture(Picture eventPicture) async {
     var dbClient = await db;
-    eventPicture.id = await dbClient!.insert(
-      PIC_TABLE,
-      eventPicture.toMap()
-    );
+    eventPicture.id = await dbClient!.insert(PIC_TABLE, eventPicture.toMap());
 
     return eventPicture;
   }
@@ -200,28 +180,29 @@ class DBHelper {
     var dbClient = await db;
     var nbEvents = 0;
 
-    nbEvents = Sqflite.firstIntValue(await dbClient!.rawQuery('SELECT COUNT(*) FROM $EVENT_TABLE'));
+    nbEvents = Sqflite.firstIntValue(
+        await dbClient!.rawQuery('SELECT COUNT(*) FROM $EVENT_TABLE'));
 
     return nbEvents;
   }
 
-    Future<int> getTotalPictures() async {
+  Future<int> getTotalPictures() async {
     var dbClient = await db;
     var nbPictures = 0;
 
-    nbPictures = Sqflite.firstIntValue(await dbClient!.rawQuery('SELECT COUNT(*) FROM $PIC_TABLE'));
+    nbPictures = Sqflite.firstIntValue(
+        await dbClient!.rawQuery('SELECT COUNT(*) FROM $PIC_TABLE'));
 
     return nbPictures;
   }
- 
+
   Future<List<Picture>> getPicturesOfEvent(int eventId) async {
     var dbClient = await db;
 
-    List<Map<String, dynamic>> mapsPictures = await dbClient!.query(
-      PIC_TABLE,
-      columns: [PIC_ID, PIC_NAME, PIC_DATA, PIC_COMMENT],
-      where: '$PIC_EVENT_ID = ?', whereArgs: [eventId]
-    );
+    List<Map<String, dynamic>> mapsPictures = await dbClient!.query(PIC_TABLE,
+        columns: [PIC_ID, PIC_NAME, PIC_DATA, PIC_COMMENT],
+        where: '$PIC_EVENT_ID = ?',
+        whereArgs: [eventId]);
     List<Picture> eventPictures = [];
 
     if (mapsPictures.length > 0) {
@@ -236,10 +217,8 @@ class DBHelper {
   Future<List<Picture>> getAllPicturesOfEvents() async {
     var dbClient = await db;
 
-    List<Map<String, dynamic>> mapsPictures = await dbClient!.query(
-      PIC_TABLE,
-      columns: [PIC_ID, PIC_NAME, PIC_DATA, PIC_COMMENT]
-    );
+    List<Map<String, dynamic>> mapsPictures = await dbClient!
+        .query(PIC_TABLE, columns: [PIC_ID, PIC_NAME, PIC_DATA, PIC_COMMENT]);
     List<Picture> eventPictures = [];
 
     if (mapsPictures.length > 0) {
@@ -254,15 +233,24 @@ class DBHelper {
   Future<List<Event>> getAllEvents() async {
     var dbClient = await db;
 
-    List<Map<String, dynamic>> mapsEvents = await dbClient!.query(
-      EVENT_TABLE,
-      columns: [EVENT_ID, EVENT_DESCR, EVENT_TITLE, EVENT_LAT, EVENT_LONG, EVENT_DATE]
-    );
-    List<Map<String, dynamic>> mapsCoverPictures = await dbClient.query(
-      COVER_PIC_TABLE,
-      columns: [PIC_ID, PIC_NAME, PIC_DATA, PIC_COMMENT]
-    );
+    List<Map<String, dynamic>> mapsCoverPictures = await dbClient!.query(
+        COVER_PIC_TABLE,
+        columns: [PIC_ID, PIC_NAME, PIC_DATA, PIC_COMMENT]);
+    List<Map<String, dynamic>> mapsEvents = await dbClient.query(EVENT_TABLE,
+        columns: [
+          EVENT_ID,
+          EVENT_DESCR,
+          EVENT_TITLE,
+          EVENT_LAT,
+          EVENT_LONG,
+          EVENT_DATE
+        ]);
     List<Event> events = [];
+
+    print("mapsEvents: ");
+    print(mapsEvents);
+    print("coverPictures: ");
+    print(mapsCoverPictures);
 
     if (mapsEvents.length > 0) {
       for (int i = 0; i < mapsEvents.length; i++) {
@@ -277,18 +265,24 @@ class DBHelper {
   Future<Profile?> getProfile() async {
     var dbClient = await db;
 
-    List<Map<String, dynamic>> profileMap = await dbClient!.query(
-      PROFILE_TABLE,
-      columns: [PROFILE_ID, PROFILE_FIRSTNAME, PROFILE_LASTNAME, PROFILE_TITLE, PROFILE_SUBTITLE, PROFILE_TOTAL_EVENTS, PROFILE_TOTAL_PICTURES, PROFILE_TOTAL_FESTIVALS],
-      where: '$PROFILE_ID = ?',
-      whereArgs: [1]
-    );
+    List<Map<String, dynamic>> profileMap = await dbClient!.query(PROFILE_TABLE,
+        columns: [
+          PROFILE_ID,
+          PROFILE_FIRSTNAME,
+          PROFILE_LASTNAME,
+          PROFILE_TITLE,
+          PROFILE_SUBTITLE,
+          PROFILE_TOTAL_EVENTS,
+          PROFILE_TOTAL_PICTURES,
+          PROFILE_TOTAL_FESTIVALS
+        ],
+        where: '$PROFILE_ID = ?',
+        whereArgs: [1]);
     List<Map<String, dynamic>> profilePictureMap = await dbClient.query(
-      PROFILE_PIC_TABLE,
-      columns: [PIC_ID, PIC_NAME, PIC_DATA, PIC_COMMENT],
-      where: '$PIC_PROFILE_ID = ?',
-      whereArgs: [1]
-    );
+        PROFILE_PIC_TABLE,
+        columns: [PIC_ID, PIC_NAME, PIC_DATA, PIC_COMMENT],
+        where: '$PIC_PROFILE_ID = ?',
+        whereArgs: [1]);
 
     if (profileMap.length == 0) {
       return null;
@@ -305,26 +299,19 @@ class DBHelper {
 
   Future<int> deletePicture(int pictureId) async {
     var dbClient = await db;
-  
-    int result = await dbClient!.delete(
-      PIC_TABLE,
-      where: "$PIC_ID = ?",
-      whereArgs: [pictureId]
-    );
+
+    int result = await dbClient!
+        .delete(PIC_TABLE, where: "$PIC_ID = ?", whereArgs: [pictureId]);
 
     return result;
   }
 
   Future<int> deleteEvent(int eventId) async {
     var dbClient = await db;
-  
-    int result = await dbClient!.delete(
-      PIC_TABLE,
-      where: "$PIC_EVENT_ID = ?",
-      whereArgs: [eventId]
-    );
+
+    int result = await dbClient!
+        .delete(PIC_TABLE, where: "$PIC_EVENT_ID = ?", whereArgs: [eventId]);
 
     return result;
   }
-
 }

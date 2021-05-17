@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tek4/pages/new_event/new_event_picture.dart';
+import 'package:flutter_tek4/utils/iconUtils.dart';
 
 class NewEvent extends StatefulWidget {
   @override
@@ -7,7 +8,6 @@ class NewEvent extends StatefulWidget {
 }
 
 class _NewEventState extends State<NewEvent> {
-
   @override
   void initState() {
     super.initState();
@@ -52,48 +52,33 @@ class _HeaderSectionState extends State<HeaderSection> {
     super.dispose();
   }
 
-  static const TextStyle optionStyle = TextStyle(
-      fontSize: 30, fontFamily: 'Pacifico');
+  static const TextStyle optionStyle =
+      TextStyle(fontSize: 30, fontFamily: 'Pacifico');
 
   @override
   Widget build(BuildContext context) {
     return Container(
       child: Center(
-        child: Column(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
-          Text(
-            'Event name :',
-            style: optionStyle,
-          ),
-          SizedBox(height: 50),
-          TextField(
-            controller: _textController,
-            decoration: const InputDecoration(
-              hintText: 'Enter event name',
+          child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+            Text(
+              'Event name :',
+              style: optionStyle,
             ),
-          ),
-          SizedBox(height: 50),
-          SizedBox(
-              height: 50,
-              width: 50,
-              child: RawMaterialButton(
-                onPressed: () => {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => NewEventPicture(name: this._textController.text)),
-                  )
-                },
-                elevation: 2.0,
-                fillColor: Colors.white,
-                child: Icon(
-                  Icons.check,
-                  size: 30.0,
+            SizedBox(height: 50),
+            Container(
+              width: MediaQuery.of(context).size.width * 0.75,
+              child: TextField(
+                controller: _textController,
+                decoration: const InputDecoration(
+                  hintText: 'Enter event name',
                 ),
-                padding: EdgeInsets.all(0.0),
-                shape: CircleBorder(),
-              )),
-        ])
-      ),
+              ),
+            ),
+            SizedBox(height: 50),
+            CheckIconEventName(textController: _textController),
+          ])),
     );
   }
-
 }

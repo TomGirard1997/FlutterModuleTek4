@@ -14,10 +14,10 @@ class UserProfile extends StatefulWidget {
 
 class _UserProfileState extends State<UserProfile> {
   DBHelper dbClient = DBHelper();
-  
+
   List<Picture>? pictures;
   Profile? profile;
-  
+
   @override
   initState() {
     super.initState();
@@ -37,7 +37,6 @@ class _UserProfileState extends State<UserProfile> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       body: ListView(children: <Widget>[
         SizedBox(height: 20),
@@ -45,17 +44,17 @@ class _UserProfileState extends State<UserProfile> {
         SizedBox(height: 40),
         Container(
             child: Wrap(children: <Widget>[
-            if (pictures != null)
-              for (int i = 0; i < pictures!.length; i++)
-                Container(
-                  height: MediaQuery.of(context).size.width / 3,
-                  width: MediaQuery.of(context).size.width / 3,
-                  decoration: BoxDecoration(
-                      image: DecorationImage(
-                          image: Image.memory(pictures![i].data!).image,
-                          fit: BoxFit.cover)),
-                )
-          ]))
+          if (pictures != null)
+            for (int i = 0; i < pictures!.length; i++)
+              Container(
+                height: MediaQuery.of(context).size.width / 3,
+                width: MediaQuery.of(context).size.width / 3,
+                decoration: BoxDecoration(
+                    image: DecorationImage(
+                        image: Image.memory(pictures![i].data!).image,
+                        fit: BoxFit.cover)),
+              )
+        ]))
       ]),
     );
   }
@@ -86,47 +85,45 @@ class _HeaderSectionState extends State<HeaderSection> {
     initDatas();
   }
 
-  displayCreateProfileDialog()  {
-
+  displayCreateProfileDialog() {
     showDialog(
         context: context,
         builder: (context) {
           return AlertDialog(
             title: Text('Edit profile'),
-            content: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                TextField(
-                        onChanged: (firstname) {
-                          setState(() {
-                            profile!.firstname = firstname;
-                          });
-                        },
-                        decoration: new InputDecoration(hintText: "Your firstname")),
-                TextField(
-                        onChanged: (lastname) {
-                          setState(() {
-                            profile!.lastname = lastname;
-                          });
-                        },
-                        decoration: new InputDecoration(hintText: "Your lastname")),
-                TextField(
-                        onChanged: (title) {
-                          setState(() {
-                            profile!.title = title;
-                          });
-                        },
-                        decoration: new InputDecoration(hintText: "Your description"))
-              ]),
+            content:
+                Column(mainAxisAlignment: MainAxisAlignment.center, children: <
+                    Widget>[
+              TextField(
+                  onChanged: (firstname) {
+                    setState(() {
+                      profile!.firstname = firstname;
+                    });
+                  },
+                  decoration: new InputDecoration(hintText: "Your firstname")),
+              TextField(
+                  onChanged: (lastname) {
+                    setState(() {
+                      profile!.lastname = lastname;
+                    });
+                  },
+                  decoration: new InputDecoration(hintText: "Your lastname")),
+              TextField(
+                  onChanged: (title) {
+                    setState(() {
+                      profile!.title = title;
+                    });
+                  },
+                  decoration: new InputDecoration(hintText: "Your description"))
+            ]),
             actions: <Widget>[
               new TextButton(
-                child: new Text('Submit'),
-                onPressed: () {
-                  print("(submit profile) firstname" + profile!.firstname);
-                  dbClient.addProfile(profile!);
-                  Navigator.of(context).pop();
-                }
-              )
+                  child: new Text('Submit'),
+                  onPressed: () {
+                    print("(submit profile) firstname" + profile!.firstname);
+                    dbClient.addProfile(profile!);
+                    Navigator.of(context).pop();
+                  })
             ],
           );
         });
@@ -150,7 +147,6 @@ class _HeaderSectionState extends State<HeaderSection> {
 
   @override
   Widget build(BuildContext context) {
-    
     return Container(
       child: Column(
         children: <Widget>[
@@ -161,7 +157,9 @@ class _HeaderSectionState extends State<HeaderSection> {
             onPressed: displayCreateProfileDialog,
           ),
           Text(
-            profile != null ? profile!.firstname + " " + profile!.lastname : "NaN",
+            profile != null
+                ? profile!.firstname + " " + profile!.lastname
+                : "NaN",
             style: TextStyle(fontWeight: FontWeight.w600, fontSize: 20),
           ),
           SizedBox(height: 20),
@@ -204,7 +202,9 @@ class _HeaderSectionState extends State<HeaderSection> {
                 Column(
                   children: <Widget>[
                     Text(
-                      profile != null ? profile!.totalFestivals.toString() : "0",
+                      profile != null
+                          ? profile!.totalFestivals.toString()
+                          : "0",
                       style: TextStyle(
                           fontWeight: FontWeight.w600,
                           fontSize: 18,
@@ -257,7 +257,7 @@ class _TakeProfilePictureSectionState extends State<TakeProfilePictureSection> {
         _pickedImage = PickedFile(pickedFile.path);
         var profilePictureToInsert = Picture(imageDatas, "profile pic", "");
         dbClient.addProfilePicture(profilePictureToInsert);
-        
+
         profilePicture = FileImage(File(_pickedImage!.path));
       } else {
         print('No image selected.');
@@ -286,7 +286,6 @@ class _TakeProfilePictureSectionState extends State<TakeProfilePictureSection> {
 
   @override
   Widget build(BuildContext context) {
-
     return Container(
         alignment: Alignment.center,
         child:
@@ -298,22 +297,22 @@ class _TakeProfilePictureSectionState extends State<TakeProfilePictureSection> {
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(100),
                     image: DecorationImage(
-                        image: profilePicture!,
-                        fit: BoxFit.cover))),
-          SizedBox(
-              height: 50,
-              width: 50,
-              child: RawMaterialButton(
-                onPressed: () => getImage(),
-                elevation: 2.0,
-                fillColor: Colors.white,
-                child: Icon(
-                  Icons.add_a_photo_outlined,
-                  size: 30.0,
-                ),
-                padding: EdgeInsets.all(5.0),
-                shape: CircleBorder(),
-              )),
+                        image: profilePicture!, fit: BoxFit.cover))),
+          Padding(
+            padding: const EdgeInsets.only(top: 60),
+            child: SizedBox(
+                height: 30,
+                width: 30,
+                child: RawMaterialButton(
+                  onPressed: () => getImage(),
+                  elevation: 2.0,
+                  fillColor: Theme.of(context).accentColor,
+                  child: Icon(Icons.add_a_photo_outlined,
+                      size: 20.0, color: Theme.of(context).primaryColor),
+                  padding: EdgeInsets.all(5.0),
+                  shape: CircleBorder(),
+                )),
+          ),
         ]));
   }
 }

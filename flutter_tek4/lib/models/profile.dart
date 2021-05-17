@@ -1,4 +1,4 @@
-import 'package:flutter_tek4/models/picture.dart';
+import '../constants/import.dart';
 
 class Profile {
   Picture? picture;
@@ -32,7 +32,7 @@ class Profile {
       'profile_totalPictures': totalPictures,
       'profile_totalFestivals': totalFestivals
     };
-    
+
     return map;
   }
 
@@ -45,5 +45,4 @@ class Profile {
     totalPictures = map['profile_totalPictures'];
     totalFestivals = map['profile_totalFestivals'];
   }
-
 }

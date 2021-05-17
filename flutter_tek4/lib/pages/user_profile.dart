@@ -1,11 +1,4 @@
-import 'dart:io';
-import 'package:flutter/widgets.dart';
-
-import 'package:flutter/material.dart';
-import 'package:flutter_tek4/models/profile.dart';
-import 'package:flutter_tek4/models/picture.dart';
-import 'package:flutter_tek4/controllers/dbHelper.dart';
-import 'package:image_picker/image_picker.dart';
+import '../constants/import.dart';
 
 class UserProfile extends StatefulWidget {
   @override
@@ -97,21 +90,21 @@ class _HeaderSectionState extends State<HeaderSection> {
               TextField(
                   onChanged: (firstname) {
                     setState(() {
-                      profile!.firstname = firstname;
+                      profile?.firstname = firstname;
                     });
                   },
                   decoration: new InputDecoration(hintText: "Your firstname")),
               TextField(
                   onChanged: (lastname) {
                     setState(() {
-                      profile!.lastname = lastname;
+                      profile?.lastname = lastname;
                     });
                   },
                   decoration: new InputDecoration(hintText: "Your lastname")),
               TextField(
                   onChanged: (title) {
                     setState(() {
-                      profile!.title = title;
+                      profile?.title = title;
                     });
                   },
                   decoration: new InputDecoration(hintText: "Your description"))
@@ -173,12 +166,12 @@ class _HeaderSectionState extends State<HeaderSection> {
           Container(
             margin: EdgeInsets.symmetric(horizontal: 56),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: <Widget>[
                 Column(
                   children: <Widget>[
                     Text(
-                      profile != null ? profile!.totalEvents.toString() : "0",
+                      profile != null ? totalEvents.toString() : "0",
                       style: TextStyle(
                           fontWeight: FontWeight.w600,
                           fontSize: 18,
@@ -190,27 +183,13 @@ class _HeaderSectionState extends State<HeaderSection> {
                 Column(
                   children: <Widget>[
                     Text(
-                      profile != null ? profile!.totalEvents.toString() : "0",
+                      profile != null ? totalPictures.toString() : "0",
                       style: TextStyle(
                           fontWeight: FontWeight.w600,
                           fontSize: 18,
                           color: Colors.amber[800]),
                     ),
                     Text('Pictures')
-                  ],
-                ),
-                Column(
-                  children: <Widget>[
-                    Text(
-                      profile != null
-                          ? profile!.totalFestivals.toString()
-                          : "0",
-                      style: TextStyle(
-                          fontWeight: FontWeight.w600,
-                          fontSize: 18,
-                          color: Colors.amber[800]),
-                    ),
-                    Text('Festivals')
                   ],
                 ),
               ],
@@ -250,19 +229,21 @@ class _TakeProfilePictureSectionState extends State<TakeProfilePictureSection> {
 
   Future getImage() async {
     final pickedFile = await picker.getImage(source: ImageSource.gallery);
-    var imageDatas = await pickedFile!.readAsBytes();
+    var imageDatas = await pickedFile?.readAsBytes();
 
-    setState(() {
-      if (pickedFile != null) {
-        _pickedImage = PickedFile(pickedFile.path);
-        var profilePictureToInsert = Picture(imageDatas, "profile pic", "");
-        dbClient.addProfilePicture(profilePictureToInsert);
+    if (imageDatas != null) {
+      setState(() {
+        if (pickedFile != null) {
+          _pickedImage = PickedFile(pickedFile.path);
+          var profilePictureToInsert = Picture(imageDatas, "profile pic", "");
+          dbClient.addProfilePicture(profilePictureToInsert);
 
-        profilePicture = FileImage(File(_pickedImage!.path));
-      } else {
-        print('No image selected.');
-      }
-    });
+          profilePicture = FileImage(File(_pickedImage!.path));
+        } else {
+          print('No image selected.');
+        }
+      });
+    }
   }
 
   Future initDatas() async {

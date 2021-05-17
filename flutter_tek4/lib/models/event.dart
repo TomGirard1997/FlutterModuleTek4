@@ -1,7 +1,6 @@
-import 'package:flutter_tek4/models/picture.dart';
+import '../constants/import.dart';
 
 class Event {
-
   Picture? coverPicture;
 
   int id = 0;
@@ -21,7 +20,7 @@ class Event {
       'event_lat': lat,
       'event_long': long
     };
-    
+
     return map;
   }
 

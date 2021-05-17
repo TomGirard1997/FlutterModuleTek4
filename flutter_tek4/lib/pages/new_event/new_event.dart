@@ -1,6 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_tek4/pages/new_event/new_event_picture.dart';
-import 'package:flutter_tek4/utils/iconUtils.dart';
+import '../../constants/import.dart';
 
 class NewEvent extends StatefulWidget {
   @override
@@ -22,23 +20,23 @@ class _NewEventState extends State<NewEvent> {
       ),
       body: ListView(children: <Widget>[
         SizedBox(height: 100),
-        HeaderSection(),
+        NewEventScreen(),
         SizedBox(height: 40),
       ]),
     );
   }
 }
 
-class HeaderSection extends StatefulWidget {
-  const HeaderSection({
+class NewEventScreen extends StatefulWidget {
+  const NewEventScreen({
     Key? key,
   }) : super(key: key);
 
   @override
-  _HeaderSectionState createState() => _HeaderSectionState();
+  _NewEventScreenState createState() => _NewEventScreenState();
 }
 
-class _HeaderSectionState extends State<HeaderSection> {
+class _NewEventScreenState extends State<NewEventScreen> {
   late TextEditingController _textController;
 
   void initState() {
@@ -52,9 +50,6 @@ class _HeaderSectionState extends State<HeaderSection> {
     super.dispose();
   }
 
-  static const TextStyle optionStyle =
-      TextStyle(fontSize: 30, fontFamily: 'Pacifico');
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -64,7 +59,7 @@ class _HeaderSectionState extends State<HeaderSection> {
               children: <Widget>[
             Text(
               'Event name :',
-              style: optionStyle,
+              style: CustomStyle.optionStyle(),
             ),
             SizedBox(height: 50),
             Container(

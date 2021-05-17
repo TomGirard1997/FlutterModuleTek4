@@ -1,4 +1,4 @@
-import 'dart:typed_data';
+import '../constants/import.dart';
 
 class Picture {
   int id = 0;
@@ -18,7 +18,7 @@ class Picture {
       'picture_data': data,
       'picture_comment': comment
     };
-    
+
     return map;
   }
 

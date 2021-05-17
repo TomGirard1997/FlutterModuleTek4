@@ -1,8 +1,4 @@
-import 'dart:ui';
-import 'package:flutter/material.dart';
-import 'package:flutter_tek4/models/event.dart';
-import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
-import 'package:flutter_tek4/controllers/dbHelper.dart';
+import '../../constants/import.dart';
 
 class NewEventDate extends StatefulWidget {
   NewEventDate({@required this.event});
@@ -30,25 +26,23 @@ class _NewEventDateState extends State<NewEventDate> {
       ),
       body: ListView(children: <Widget>[
         SizedBox(height: 100),
-        HeaderSection(event: this.event),
+        EventDateScreen(event: this.event),
         SizedBox(height: 40),
       ]),
     );
   }
 }
 
-class HeaderSection extends StatefulWidget {
-  HeaderSection({Key? key, this.event}) : super(key: key);
+class EventDateScreen extends StatefulWidget {
+  EventDateScreen({Key? key, this.event}) : super(key: key);
 
   final event;
-  static const TextStyle optionStyle =
-      TextStyle(fontSize: 30, fontFamily: 'Pacifico');
 
   @override
-  _HeaderSectionState createState() => _HeaderSectionState();
+  _EventDateScreenState createState() => _EventDateScreenState();
 }
 
-class _HeaderSectionState extends State<HeaderSection> {
+class _EventDateScreenState extends State<EventDateScreen> {
   late DBHelper dbEvent;
 
   List<Picture>? pictures;
@@ -61,6 +55,9 @@ class _HeaderSectionState extends State<HeaderSection> {
       print('confirm $date');
       var eventWithDate = this.widget.event as Event;
       eventWithDate.date = date.toString();
+      print("coverPicture");
+
+      print(this.widget.event.coverPicture);
       await dbEvent.addEvent(eventWithDate, this.widget.event.coverPicture);
     } else {
       this.widget.event.date = "";
@@ -82,7 +79,7 @@ class _HeaderSectionState extends State<HeaderSection> {
               children: <Widget>[
             Text(
               'Event date :',
-              style: HeaderSection.optionStyle,
+              style: CustomStyle.optionStyle(),
             ),
             SizedBox(height: 50),
             TextButton(

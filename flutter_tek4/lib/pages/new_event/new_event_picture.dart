@@ -1,10 +1,4 @@
-import 'dart:io';
-import 'package:flutter/material.dart';
-import 'package:flutter_tek4/pages/new_event/new_event_description.dart';
-import 'package:flutter_tek4/utils/iconUtils.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:flutter_tek4/models/picture.dart';
-import 'package:flutter_tek4/models/event.dart';
+import '../../constants/import.dart';
 
 class NewEventPicture extends StatefulWidget {
   NewEventPicture({@required this.name});
@@ -45,9 +39,6 @@ class MainSection extends StatelessWidget {
   final name;
   late final event = Event(this.name, "no description", "", 1.0, 1.0);
 
-  static const TextStyle optionStyle =
-      TextStyle(fontSize: 30, fontFamily: 'Pacifico');
-
   void onSubmit(pickedFile) async {
     var imageDatas = await pickedFile!.readAsBytes();
     Picture? coverPicture = Picture(imageDatas, "main picture", " ");
@@ -63,7 +54,7 @@ class MainSection extends StatelessWidget {
               children: <Widget>[
             Text(
               'Event picture :',
-              style: optionStyle,
+              style: CustomStyle.optionStyle(),
             ),
             SizedBox(height: 50),
             TakePictureSection(onSubmit: this.onSubmit),

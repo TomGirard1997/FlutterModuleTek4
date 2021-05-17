@@ -1,15 +1,13 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_tek4/services/config.dart';
+import '../constants/import.dart';
 
 class MyTheme with ChangeNotifier {
-
   static bool _isDark = true;
 
   MyTheme() {
-    if(box.containsKey('currentTheme'))
+    if (box.containsKey('currentTheme'))
       _isDark = box.get('currentTheme');
     else
-      box.put('currentTheme', _isDark);  
+      box.put('currentTheme', _isDark);
   }
 
   ThemeMode currentTheme() {

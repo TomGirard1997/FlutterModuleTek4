@@ -1,11 +1,7 @@
-import 'dart:async';
-import 'dart:io' as io;
-import 'package:flutter_tek4/models/profile.dart';
+import '../constants/import.dart';
+
+import "package:sqflite/sqflite.dart";
 import 'package:path/path.dart';
-import 'package:sqflite/sqflite.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:flutter_tek4/models/picture.dart';
-import 'package:flutter_tek4/models/event.dart';
 
 class DBHelper {
   static Database? _db;
@@ -38,13 +34,7 @@ class DBHelper {
   static const String PIC_TABLE = 'PicturesTable';
   static const String COVER_PIC_TABLE = 'CoverPictureTable';
 
-  // static const String DB_NAME = 'flu.db';
-
-  // static const String DB_NAME = 'f.db';
-
-  // static const String DB_NAME = 'test.db';
-
-  static const String DB_NAME = 'test4.db';
+  static const String DB_NAME = 'test5.db';
 
   Future<Database?> get db async {
     if (_db != null) {
@@ -55,7 +45,7 @@ class DBHelper {
   }
 
   initDb() async {
-    io.Directory documentsDirectory = await getApplicationDocumentsDirectory();
+    Directory documentsDirectory = await getApplicationDocumentsDirectory();
     String path = join(documentsDirectory.path, DB_NAME);
     var db = await openDatabase(path, version: 1, onCreate: _onCreate);
 

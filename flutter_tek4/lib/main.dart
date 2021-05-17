@@ -2,15 +2,7 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-import 'package:flutter/material.dart';
-import 'package:flutter_tek4/pages/user_profile.dart';
-import 'package:flutter_tek4/pages/settings_page.dart';
-import 'package:flutter_tek4/pages/home.dart';
-import 'package:flutter_tek4/pages/map.dart';
-import 'package:flutter_tek4/services/config.dart';
-import 'package:hive/hive.dart';
-import 'package:hive_flutter/hive_flutter.dart';
-// import 'package:english_words/english_words.dart';
+import 'constants/import.dart';
 
 void main() async {
   await Hive.initFlutter();

@@ -1,11 +1,4 @@
-import 'dart:io';
-
-import 'package:flutter/material.dart';
-import 'package:flutter_tek4/controllers/dbHelper.dart';
-import 'package:flutter_tek4/models/picture.dart';
-import 'package:flutter_tek4/models/profile.dart';
-import 'package:flutter_tek4/models/event.dart';
-import 'package:image_picker/image_picker.dart';
+import '../constants/import.dart';
 
 class EventVue extends StatefulWidget {
   EventVue({@required this.event});
@@ -32,15 +25,15 @@ class _EventVueState extends State<EventVue> {
         centerTitle: true,
       ),
       body: ListView(children: <Widget>[
-        HeaderSection(event: event),
+        EventVueScreen(event: event),
         SizedBox(height: 40),
       ]),
     );
   }
 }
 
-class HeaderSection extends StatefulWidget {
-  HeaderSection({required this.event});
+class EventVueScreen extends StatefulWidget {
+  EventVueScreen({required this.event});
 
   final Event event;
   static const TextStyle titleStyle =
@@ -50,11 +43,11 @@ class HeaderSection extends StatefulWidget {
       TextStyle(fontSize: 20, fontFamily: 'Pacifico');
 
   @override
-  _HeaderSectionState createState() => _HeaderSectionState(event: event);
+  _EventVueScreenState createState() => _EventVueScreenState(event: event);
 }
 
-class _HeaderSectionState extends State<HeaderSection> {
-  _HeaderSectionState({required this.event});
+class _EventVueScreenState extends State<EventVueScreen> {
+  _EventVueScreenState({required this.event});
 
   final Event event;
   late final pickedFile;
@@ -85,11 +78,11 @@ class _HeaderSectionState extends State<HeaderSection> {
               children: <Widget>[
             Text(
               widget.event.date,
-              style: HeaderSection.descriptionStyle,
+              style: EventVueScreen.descriptionStyle,
             ),
             Text(
               widget.event.title,
-              style: HeaderSection.titleStyle,
+              style: EventVueScreen.titleStyle,
             ),
             SizedBox(height: 20),
             Container(
@@ -104,7 +97,7 @@ class _HeaderSectionState extends State<HeaderSection> {
             SizedBox(height: 30),
             Text(
               widget.event.description,
-              style: HeaderSection.descriptionStyle,
+              style: EventVueScreen.descriptionStyle,
             ),
             SizedBox(height: 20),
             SizedBox(
@@ -140,9 +133,6 @@ class PictureItemSection extends StatelessWidget {
   PictureItemSection({required this.picture});
 
   final Picture picture;
-
-  static const TextStyle optionStyle = TextStyle(
-      fontSize: 30, fontWeight: FontWeight.bold, fontFamily: 'Pacifico');
 
   @override
   Widget build(BuildContext context) {
@@ -246,41 +236,44 @@ class _MyDialogState extends State<MyDialog> {
   Widget build(BuildContext context) {
     return AlertDialog(
       title: Text('Add a picture'),
-      content: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Container(
-                height: 200,
-                width: 150,
-                decoration: BoxDecoration(
-                    image: DecorationImage(
-                        image: imageTodisplay!, fit: BoxFit.cover))),
-            SizedBox(height: 20),
-            SizedBox(
-                height: 50,
-                width: 50,
-                child: RawMaterialButton(
-                  onPressed: () => getImage(),
-                  elevation: 2.0,
-                  fillColor: Theme.of(context).accentColor,
-                  child: Icon(
-                    Icons.add_a_photo_outlined,
-                    size: 30.0,
-                    color: Theme.of(context).primaryColor,
-                  ),
-                  shape: CircleBorder(),
-                )),
-            TextField(
-                onChanged: (_name) {
-                  name = _name;
-                },
-                decoration: new InputDecoration(hintText: "Picture name")),
-            TextField(
-                onChanged: (_comment) {
-                  comment = _comment;
-                },
-                decoration: new InputDecoration(hintText: "Picture comment")),
-          ]),
+      content: SingleChildScrollView(
+        physics: ScrollPhysics(),
+        child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Container(
+                  height: 200,
+                  width: 150,
+                  decoration: BoxDecoration(
+                      image: DecorationImage(
+                          image: imageTodisplay!, fit: BoxFit.cover))),
+              SizedBox(height: 20),
+              SizedBox(
+                  height: 50,
+                  width: 50,
+                  child: RawMaterialButton(
+                    onPressed: () => getImage(),
+                    elevation: 2.0,
+                    fillColor: Theme.of(context).accentColor,
+                    child: Icon(
+                      Icons.add_a_photo_outlined,
+                      size: 30.0,
+                      color: Theme.of(context).primaryColor,
+                    ),
+                    shape: CircleBorder(),
+                  )),
+              TextField(
+                  onChanged: (_name) {
+                    name = _name;
+                  },
+                  decoration: new InputDecoration(hintText: "Picture name")),
+              TextField(
+                  onChanged: (_comment) {
+                    comment = _comment;
+                  },
+                  decoration: new InputDecoration(hintText: "Picture comment")),
+            ]),
+      ),
       actions: <Widget>[
         new TextButton(
             child: new Text('Submit'),

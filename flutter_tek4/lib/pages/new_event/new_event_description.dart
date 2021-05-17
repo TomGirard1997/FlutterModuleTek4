@@ -1,7 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_tek4/models/event.dart';
-import 'package:flutter_tek4/pages/new_event/new_event_geopos.dart';
-import 'package:flutter_tek4/utils/iconUtils.dart';
+import '../../constants/import.dart';
 
 class NewEventDescription extends StatefulWidget {
   NewEventDescription({@required this.event});
@@ -30,21 +27,18 @@ class _NewEventDescriptionState extends State<NewEventDescription> {
       ),
       body: ListView(children: <Widget>[
         SizedBox(height: 100),
-        HeaderSection(event: event),
+        EventDescrScreen(event: event),
         SizedBox(height: 40),
       ]),
     );
   }
 }
 
-class HeaderSection extends StatelessWidget {
-  HeaderSection({required this.event});
+class EventDescrScreen extends StatelessWidget {
+  EventDescrScreen({required this.event});
 
   final Event event;
   late final TextEditingController _textController = TextEditingController();
-
-  static const TextStyle optionStyle =
-      TextStyle(fontSize: 30, fontFamily: 'Pacifico');
 
   void dispose() {
     _textController.dispose();
@@ -57,10 +51,7 @@ class HeaderSection extends StatelessWidget {
           child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-            Text(
-              'Event description :',
-              style: optionStyle,
-            ),
+            Text('Event description :', style: CustomStyle.optionStyle()),
             SizedBox(height: 50),
             Container(
               width: MediaQuery.of(context).size.width * 0.75,

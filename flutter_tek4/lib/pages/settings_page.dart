@@ -1,8 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:flutter/semantics.dart';
-import 'package:flutter_tek4/pages/settings/settings_help_page.dart';
-import 'package:flutter_tek4/services/config.dart';
-import 'package:flutter_tek4/pages/settings/settings_about_page.dart';
+import '../constants/import.dart';
 
 class Settings extends StatefulWidget {
   @override
@@ -20,67 +16,73 @@ class _SettingsState extends State<Settings> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
         floatingActionButton: FloatingActionButton.extended(
-          
-            onPressed: () {
-                currentTheme.switchTheme();
-            },
-            label: Text('Switch Theme'),
-            icon: Icon(Icons.brightness_high),
-            ),  
-        body: Center(     
-          child: Column(mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: <Widget>[
-            SizedBox(height: 20),
-            Row(mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-              Icon(Icons.image_search),  
-              InkWell(
-                child: Text('About Memories Book',
-                style: TextStyle(
-                  fontSize: custFontSize
-                )),
-                onTap: () {Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => AboutUs()),
-              ) ;}
-              )
-            ]),
-            SizedBox(height: 20),
-            const Divider(
-            height: 20,
-            thickness: 2,
-            indent: 20,
-            endIndent: 20,
-          ),
-            Row(mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-              Icon(Icons.help),
-              InkWell(
-                child: Text('Help',style: TextStyle(
-                  fontSize: custFontSize
-                )),
-                onTap: () {Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => Help()),
-              );}
+          onPressed: () {
+            currentTheme.switchTheme();
+          },
+          label: Text('Switch Theme'),
+          icon: Icon(Icons.brightness_high),
+        ),
+        body: Center(
+            child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: <Widget>[
+              SizedBox(height: 20),
+              Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Icon(Icons.image_search),
+                    InkWell(
+                        child: Text('About Memories Book',
+                            style: TextStyle(fontSize: custFontSize)),
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => AboutUs()),
+                          );
+                        })
+                  ]),
+              SizedBox(height: 20),
+              const Divider(
+                height: 20,
+                thickness: 2,
+                indent: 20,
+                endIndent: 20,
               ),
-            ],),
-            SizedBox(height: 20),
-            const Divider(
-            height: 20,
-            thickness: 2,
-            indent: 20,
-            endIndent: 20,
-          ),
-          Row(mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Icon(Icons.format_size),
-              Text('Change text size',textAlign: TextAlign.center, style: TextStyle(
-                  fontSize: custFontSize
-                ),),]),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Icon(Icons.help),
+                  InkWell(
+                      child: Text('Help',
+                          style: TextStyle(fontSize: custFontSize)),
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => Help()),
+                        );
+                      }),
+                ],
+              ),
+              SizedBox(height: 20),
+              const Divider(
+                height: 20,
+                thickness: 2,
+                indent: 20,
+                endIndent: 20,
+              ),
+              Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Icon(Icons.format_size),
+                    Text(
+                      'Change text size',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(fontSize: custFontSize),
+                    ),
+                  ]),
               Slider(
                 value: custFontSize,
                 min: 15,
@@ -93,12 +95,12 @@ class _SettingsState extends State<Settings> {
                   });
                 },
               ),
-            const Divider(
-            height: 20,
-            thickness: 2,
-            indent: 20,
-            endIndent: 20,
-          ),
-    ])));
+              const Divider(
+                height: 20,
+                thickness: 2,
+                indent: 20,
+                endIndent: 20,
+              ),
+            ])));
   }
 }

@@ -1,9 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_tek4/models/event.dart';
-import 'package:flutter_tek4/pages/new_event/new_event_date.dart';
-import 'package:flutter_tek4/pages/new_event/new_event_description.dart';
-import 'package:flutter_tek4/pages/new_event/new_event_geopos.dart';
-import 'package:flutter_tek4/pages/new_event/new_event_picture.dart';
+import '../constants/import.dart';
 
 class CheckIconEventName extends StatelessWidget {
   const CheckIconEventName({

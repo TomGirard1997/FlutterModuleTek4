@@ -1,15 +1,4 @@
-import 'dart:typed_data';
-
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_tek4/controllers/dbHelper.dart';
-import 'package:flutter_tek4/pages/eventVue.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:custom_info_window/custom_info_window.dart';
-import '../models/album.dart';
-import 'package:flutter_tek4/models/event.dart';
-
-// import '../services/location_album.dart' as locations;
+import '../constants/import.dart';
 
 import 'dart:ui' as ui;
 

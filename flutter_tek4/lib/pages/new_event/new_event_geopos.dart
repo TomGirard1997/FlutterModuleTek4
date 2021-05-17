@@ -1,9 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_tek4/pages/new_event/new_event_date.dart';
-import 'package:flutter_tek4/models/event.dart';
-import 'package:flutter_tek4/utils/iconUtils.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:custom_info_window/custom_info_window.dart';
+import '../../constants/import.dart';
 
 class NewEventGeopos extends StatefulWidget {
   NewEventGeopos({@required this.event});
@@ -33,26 +28,25 @@ class _NewEventGeoposState extends State<NewEventGeopos> {
             child: Center(
           child: Column(children: <Widget>[
             SizedBox(height: 80),
-            HeaderSection(event: event),
+            EventGeoposScreen(event: event),
             SizedBox(height: 40),
           ]),
         )));
   }
 }
 
-class HeaderSection extends StatefulWidget {
-  HeaderSection({required this.event});
+class EventGeoposScreen extends StatefulWidget {
+  EventGeoposScreen({required this.event});
 
   final Event event;
-  static const TextStyle optionStyle =
-      TextStyle(fontSize: 30, fontFamily: 'Pacifico');
 
   @override
-  _HeaderSectionState createState() => _HeaderSectionState(event: event);
+  _EventGeoposScreenState createState() =>
+      _EventGeoposScreenState(event: event);
 }
 
-class _HeaderSectionState extends State<HeaderSection> {
-  _HeaderSectionState({required this.event});
+class _EventGeoposScreenState extends State<EventGeoposScreen> {
+  _EventGeoposScreenState({required this.event});
 
   final Event event;
   final LatLng _latLng = LatLng(0, -30);
@@ -94,7 +88,7 @@ class _HeaderSectionState extends State<HeaderSection> {
               children: <Widget>[
             Text(
               'Event Geoposition :',
-              style: HeaderSection.optionStyle,
+              style: CustomStyle.optionStyle(),
             ),
             SizedBox(height: 25),
             Container(

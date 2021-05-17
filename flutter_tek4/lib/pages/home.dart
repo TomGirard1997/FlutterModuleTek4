@@ -1,10 +1,4 @@
-import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_overlay_loader/flutter_overlay_loader.dart';
-import 'package:flutter_tek4/pages/new_event/new_event.dart';
-import 'package:flutter_tek4/pages/eventVue.dart';
-import 'package:flutter_tek4/controllers/dbHelper.dart';
-import 'package:flutter_tek4/models/event.dart';
+import '../constants/import.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -32,9 +26,6 @@ class AddEventButton extends StatelessWidget {
   final AsyncCallback updateEvent;
 
   AddEventButton({required this.updateEvent});
-
-  static const TextStyle optionStyle = TextStyle(
-      fontSize: 30, fontWeight: FontWeight.bold, fontFamily: 'Pacifico');
 
   createEvent(context) async {
     await Navigator.push(
@@ -72,9 +63,6 @@ class AddEventButton extends StatelessWidget {
 }
 
 class EventListSection extends StatefulWidget {
-  static const TextStyle optionStyle = TextStyle(
-      fontSize: 30, fontWeight: FontWeight.bold, fontFamily: 'Pacifico');
-
   @override
   _EventListSectionState createState() => _EventListSectionState();
 }
